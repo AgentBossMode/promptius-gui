@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+      "target": "es2020",
+      "module": "esnext",
+      "lib": ["es2020", "dom"],
+      "moduleResolution": "node",
+      "jsx": "react",
+      "declaration": true,
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "baseUrl": ".",
+      "paths": {
+        "@dgui/schemas": ["packages/schemas/src"],
+        "@dgui/adapters": ["packages/adapters/src"],
+        "@dgui/core": ["packages/core/src"],
+        "@dgui/material-ui": ["packages/material-ui/src"],
+        "@dgui/chakra-ui": ["packages/chakra-ui/src"],
+        "@dgui/ant-design": ["packages/ant-design/src"]
+      }
+    }
+  }
+  

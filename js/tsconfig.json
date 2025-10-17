@@ -1,0 +1,11 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/schemas" },
+    { "path": "./packages/core" },
+    { "path": "./packages/adapters" },
+    { "path": "./packages/material-ui" },
+    { "path": "./packages/chakra-ui" },
+    { "path": "./packages/ant-design" }
+  ]
+}
