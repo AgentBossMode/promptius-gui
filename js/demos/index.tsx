@@ -10,8 +10,6 @@ import {
   CardTitle,
 } from '../src/components/ui/card';
 import { Input } from '../src/components/ui/input';
-import { Alert, AlertDescription } from '../src/components/ui/alert';
-import { AlertCircle, CheckCircle2, Package } from 'lucide-react';
 import { UISchema } from '../packages/schemas';
 import UIFactory from '../packages/core/src/index';
 import { ChakraProvider } from '@chakra-ui/react';
