@@ -7,6 +7,6 @@
       "composite": true
     },
     "include": ["src"],
-    "references": [{ "path": "../adapters" }]
+    "references": [{ "path": "../adapters" }, { "path": "../core" }]
   }
   

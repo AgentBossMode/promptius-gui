@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { AdapterRegistry } from '@dgui/adapters';
 import { ButtonProps, InputProps, TextProps, CardProps, AlertProps, ContainerProps, GridProps, StackProps, UIComponent, ChartProps } from '@dgui/schemas';
+import { ComponentFactory } from '@dgui/core';
 
 export const materialUIAdapter: AdapterRegistry['material-ui'] = {
   button: {
@@ -365,3 +366,8 @@ export const materialUIAdapter: AdapterRegistry['material-ui'] = {
     },
   },
 };
+
+// Auto-register the adapter when this module is imported
+ComponentFactory.registerAdapter('material-ui', materialUIAdapter);
+
+export default materialUIAdapter;

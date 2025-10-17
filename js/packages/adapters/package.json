@@ -1,6 +1,10 @@
 {
     "name": "@dgui/adapters",
     "version": "1.0.0",
+    "description": "DGUI Adapters - Type definitions for UI framework adapters",
+    "keywords": ["react", "ui", "adapters", "types", "definitions"],
+    "author": "Kanishk Gupta <kanishkgupta2000@gmail.com>",
+    "license": "MIT",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
@@ -11,7 +15,9 @@
     },
     "peerDependencies": {
       "@dgui/core": "1.0.0",
-      "react": ">=16.8.0",
-      "@chakra-ui/react": ">=2.0.0"
+      "react": ">=16.8.0"
+    },
+    "publishConfig": {
+      "access": "public"
     }
   }

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Input, Typography, Card, Alert, Row, Col, Space, Form } from 'antd';
+import { Button, Input, Typography, Card, Alert, Row, Col, Space } from 'antd';
 import { AdapterRegistry } from '@dgui/adapters';
 import { ButtonProps, InputProps, TextProps, CardProps, AlertProps, ContainerProps, GridProps, StackProps, ChartProps } from '@dgui/schemas';
+import { ComponentFactory } from '@dgui/core';
 
 const { Text, Title, Paragraph } = Typography;
 
@@ -292,3 +293,8 @@ export const antDesignAdapter: AdapterRegistry['ant-design'] = {
     },
   },
 };
+
+// Auto-register the adapter when this module is imported
+ComponentFactory.registerAdapter('ant-design', antDesignAdapter);
+
+export default antDesignAdapter;

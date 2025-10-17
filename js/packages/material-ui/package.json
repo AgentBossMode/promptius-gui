@@ -1,6 +1,10 @@
 {
   "name": "@dgui/material-ui",
   "version": "1.0.0",
+  "description": "DGUI Material UI Adapter - Dynamic UI components for Material UI",
+  "keywords": ["react", "ui", "material-ui", "mui", "adapter", "components"],
+  "author": "Kanishk Gupta <kanishkgupta2000@gmail.com>",
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -12,9 +16,10 @@
   "peerDependencies": {
     "@dgui/core": "1.0.0",
     "@mui/material": ">=5.0.0",
-    "react": ">=16.8.0"
+    "react": ">=16.8.0",
+    "@emotion/styled": ">=11.0.0"
   },
-  "dependencies": {
-    "@emotion/styled": "^11.14.1"
+  "publishConfig": {
+    "access": "public"
   }
 }

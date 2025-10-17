@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { AdapterRegistry } from '@dgui/adapters';
 import { ButtonProps, InputProps, TextProps, CardProps, AlertProps, ContainerProps, GridProps, StackProps, ChartProps } from '@dgui/schemas';
+import { ComponentFactory } from '@dgui/core';
 
 export const chakraUIAdapter: AdapterRegistry['chakra-ui'] = {
   button: {
@@ -263,3 +264,8 @@ export const chakraUIAdapter: AdapterRegistry['chakra-ui'] = {
     },
   },
 };
+
+// Auto-register the adapter when this module is imported
+ComponentFactory.registerAdapter('chakra-ui', chakraUIAdapter);
+
+export default chakraUIAdapter;

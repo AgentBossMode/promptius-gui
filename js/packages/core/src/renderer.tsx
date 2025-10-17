@@ -1,7 +1,7 @@
 import React from 'react';
 import { UIComponent, EventType, EventAction } from '@dgui/schemas';
-import { useEventSystem } from '@dgui/core/src/events';
-import { ComponentFactory } from '@dgui/core/src/factory';
+import { useEventSystem } from './events';
+import { ComponentFactory } from './factory';
 
 export const DynamicRenderer: React.FC<{ component: UIComponent }> = ({ component }) => {
   const eventSystem = useEventSystem();

@@ -10,8 +10,11 @@ import {
   CardTitle,
 } from '../src/components/ui/card';
 import { Input } from '../src/components/ui/input';
-import { UISchema } from '../packages/schemas';
-import UIFactory from '../packages/core/src/index';
+import { UISchema } from '@dgui/schemas';
+import UIFactory from '@dgui/core';
+import '@dgui/material-ui';
+import '@dgui/chakra-ui';
+import '@dgui/ant-design';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import toast, { Toaster } from 'react-hot-toast';

@@ -1,6 +1,10 @@
 {
   "name": "@dgui/ant-design",
   "version": "1.0.0",
+  "description": "DGUI Ant Design Adapter - Dynamic UI components for Ant Design",
+  "keywords": ["react", "ui", "ant-design", "adapter", "components"],
+  "author": "Kanishk Gupta <kanishkgupta2000@gmail.com>",
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -9,12 +13,12 @@
   "scripts": {
     "build": "tsc -b"
   },
-  "dependencies": {
-    "antd": "5.17.4"
-  },
   "peerDependencies": {
     "@dgui/core": "1.0.0",
     "react": ">=16.8.0",
     "antd": ">=5.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

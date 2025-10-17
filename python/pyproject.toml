@@ -1,13 +1,69 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
-name = "python"
+name = "dgui-schema"
 version = "0.1.0"
-description = "Add your description here"
+description = "Type-safe UI schema definitions for cross-platform UI generation"
 readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-    "dotenv>=0.9.9",
-    "langchain-openai>=0.3.35",
-    "fastapi>=0.111.0",
-    "uvicorn[standard]>=0.30.1",
-    "langchain-google-genai>=2.1.12",
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+authors = [
+    {name = "Kanishk Gupta", email = "51890299+kanishkgupta2000@users.noreply.github.com"},
 ]
+maintainers = [
+    {name = "Kanishk Gupta", email = "51890299+kanishkgupta2000@users.noreply.github.com"},
+]
+keywords = ["ui", "schema", "typescript", "react", "vue", "angular", "pydantic", "validation"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: User Interfaces",
+    "Typing :: Typed",
+]
+dependencies = [
+    "pydantic>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/kanishkgupta2000/DGUI"
+Repository = "https://github.com/kanishkgupta2000/DGUI"
+Documentation = "https://github.com/kanishkgupta2000/DGUI#readme"
+"Bug Tracker" = "https://github.com/kanishkgupta2000/DGUI/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["dgui_schema"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

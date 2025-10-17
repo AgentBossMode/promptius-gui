@@ -1,29 +1,29 @@
-import { AdapterRegistry } from '@dgui/adapters';
-import { materialUIAdapter } from '@dgui/material-ui';
-import { chakraUIAdapter } from '@dgui/chakra-ui';
-import { antDesignAdapter } from '@dgui/ant-design';
-
-export const adapters: AdapterRegistry = {
-  'material-ui': materialUIAdapter,
-  'chakra-ui': chakraUIAdapter,
-  'ant-design': antDesignAdapter,
-};
+import { AdapterRegistry, ComponentAdapter } from '@dgui/adapters';
 
 export class ComponentFactory {
-  private static currentAdapter: keyof typeof adapters = 'material-ui';
+  private static adapters: AdapterRegistry = {};
+  private static currentAdapter: string = 'material-ui';
 
-  static useAdapter(adapterName: keyof typeof adapters) {
-    if (!adapters[adapterName]) {
-      throw new Error(`Adapter "${adapterName}" not found`);
+  static registerAdapter(name: string, adapter: Record<string, ComponentAdapter>) {
+    this.adapters[name] = adapter;
+  }
+
+  static useAdapter(adapterName: string) {
+    if (!this.adapters[adapterName]) {
+      throw new Error(`Adapter "${adapterName}" not found. Make sure you have imported the adapter package.`);
     }
     this.currentAdapter = adapterName;
   }
 
   static getAdapter() {
-    return adapters[this.currentAdapter];
+    return this.adapters[this.currentAdapter];
   }
 
   static getCurrentAdapterName() {
     return this.currentAdapter;
+  }
+
+  static getAvailableAdapters() {
+    return Object.keys(this.adapters);
   }
 }

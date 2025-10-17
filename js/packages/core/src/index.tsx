@@ -1,8 +1,8 @@
 import React from 'react';
 import { UISchema } from '@dgui/schemas';
-import { EventSystemProvider } from '@dgui/core/src/events';
-import { ComponentFactory } from '@dgui/core/src/factory';
-import { DynamicRenderer } from '@dgui/core/src/renderer';
+import { EventSystemProvider } from './events';
+import { ComponentFactory } from './factory';
+import { DynamicRenderer } from './renderer';
 
 const UIFactory: React.FC<{ schema: UISchema }> = ({ schema }) => {
   if (schema.metadata?.framework) {
@@ -25,3 +25,7 @@ const UIFactory: React.FC<{ schema: UISchema }> = ({ schema }) => {
 };
 
 export default UIFactory;
+export { EventSystemProvider, useEventSystem } from './events';
+export { ComponentFactory } from './factory';
+export { DynamicRenderer } from './renderer';
+export type { AdapterRegistry, ComponentAdapter } from '@dgui/adapters';

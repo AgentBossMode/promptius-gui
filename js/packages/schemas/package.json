@@ -1,6 +1,10 @@
 {
     "name": "@dgui/schemas",
     "version": "1.0.0",
+    "description": "DGUI Schemas - Type definitions for UI component schemas",
+    "keywords": ["react", "ui", "schemas", "types", "definitions"],
+    "author": "Kanishk Gupta <kanishkgupta2000@gmail.com>",
+    "license": "MIT",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
@@ -11,7 +15,10 @@
     },
     "dependencies": {
     },
-    "peerDependencies": {
-      "react": ">=16.8.0"
-    }
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
+}
