@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../src/components/ui/card';
+import { Input } from '../src/components/ui/input';
 import { Alert, AlertDescription } from '../src/components/ui/alert';
 import { AlertCircle, CheckCircle2, Package } from 'lucide-react';
 import { UISchema } from '../packages/schemas';
@@ -17,16 +18,16 @@ import { ChakraProvider } from '@chakra-ui/react';
 
 const demoSchemas = {
   form: {
-    version: '1.0.0',
     metadata: {
       title: 'User Registration',
       description: 'Dynamic form with multiple UI framework support',
       framework: 'shadcn',
+      version: '1.0.0',
     },
     root: {
       id: 'root',
       type: 'container',
-      props: { className: 'max-w-2xl mx-auto p-6' },
+      props: { maxWidth: 768, padding: 24, centered: true },
       children: [
         {
           id: 'form-card',
@@ -37,13 +38,14 @@ const demoSchemas = {
           },
           children: [
             {
-              id: 'formContainer',
-              type: 'formContainer',
+              id: 'form-stack',
+              type: 'stack',
+              props: { gap: 12 },
               children: [
                 {
                   id: 'name-stack',
                   type: 'stack',
-                  layout: { gap: 12 },
+                  props: { gap: 12 },
                   children: [
                     {
                       id: 'name-label',
@@ -51,7 +53,6 @@ const demoSchemas = {
                       props: {
                         tag: 'label',
                         content: 'Full Name',
-                        className: 'text-sm font-medium',
                       },
                     },
                     {
@@ -64,7 +65,7 @@ const demoSchemas = {
                 {
                   id: 'email-stack',
                   type: 'stack',
-                  layout: { gap: 12 },
+                  props: { gap: 12 },
                   children: [
                     {
                       id: 'email-label',
@@ -72,7 +73,6 @@ const demoSchemas = {
                       props: {
                         tag: 'label',
                         content: 'Email Address',
-                        className: 'text-sm font-medium',
                       },
                     },
                     {
@@ -89,14 +89,14 @@ const demoSchemas = {
                   id: 'alert',
                   type: 'alert',
                   props: {
-                    variant: 'default',
+                    variant: 'info',
                     message: 'Your information is secure and encrypted.',
                   },
                 },
                 {
                   id: 'button-group',
                   type: 'grid',
-                  layout: { columns: 2, gap: 12 },
+                  props: { columns: 2, gap: 12 },
                   children: [
                     {
                       id: 'cancel-btn',
@@ -106,7 +106,7 @@ const demoSchemas = {
                     {
                       id: 'submit-btn',
                       type: 'button',
-                      props: { label: 'Create Account', variant: 'default' },
+                      props: { label: 'Create Account', variant: 'primary' },
                     },
                   ],
                 },
@@ -119,21 +119,21 @@ const demoSchemas = {
   } as UISchema,
 
   dashboard: {
-    version: '1.0.0',
     metadata: {
       title: 'Analytics Dashboard',
       description: 'A responsive dashboard layout',
       framework: 'shadcn',
+      version: '1.0.0',
     },
     root: {
       id: 'root',
       type: 'container',
-      props: { className: 'max-w-6xl mx-auto p-6' },
+      props: { maxWidth: 1200, padding: 24, centered: true },
       children: [
         {
           id: 'stats-grid',
           type: 'grid',
-          layout: { columns: 3, gap: 16 },
+          props: { columns: 3, gap: 16 },
           children: [
             {
               id: 'stat-1',
@@ -146,7 +146,6 @@ const demoSchemas = {
                   props: {
                     tag: 'p',
                     content: '12,345',
-                    className: 'text-3xl font-bold',
                   },
                 },
                 {
@@ -155,7 +154,6 @@ const demoSchemas = {
                   props: {
                     tag: 'p',
                     content: '+12.5% from last month',
-                    className: 'text-sm text-green-600 mt-2',
                   },
                 },
               ],
@@ -171,7 +169,6 @@ const demoSchemas = {
                   props: {
                     tag: 'p',
                     content: '$98,765',
-                    className: 'text-3xl font-bold text-green-600',
                   },
                 },
                 {
@@ -180,7 +177,6 @@ const demoSchemas = {
                   props: {
                     tag: 'p',
                     content: '+8.2% from last month',
-                    className: 'text-sm text-green-600 mt-2',
                   },
                 },
               ],
@@ -196,7 +192,6 @@ const demoSchemas = {
                   props: {
                     tag: 'p',
                     content: '432',
-                    className: 'text-3xl font-bold text-blue-600',
                   },
                 },
                 {
@@ -205,7 +200,6 @@ const demoSchemas = {
                   props: {
                     tag: 'p',
                     content: '+18.7% from last hour',
-                    className: 'text-sm text-green-600 mt-2',
                   },
                 },
               ],
@@ -215,13 +209,13 @@ const demoSchemas = {
         {
           id: 'alert-section',
           type: 'container',
-          props: { className: 'mt-6' },
+          props: { padding: 0 },
           children: [
             {
               id: 'success-alert',
               type: 'alert',
               props: {
-                variant: 'default',
+                variant: 'info',
                 message:
                   'System is operating normally. All services are up and running.',
               },
@@ -231,13 +225,112 @@ const demoSchemas = {
       ],
     },
   } as UISchema,
+
+  charts: {
+    metadata: {
+      title: 'Charts Gallery',
+      description: 'Bar, Line, and Pie charts rendered via UiSchema',
+      framework: 'shadcn',
+      version: '1.0.0',
+    },
+    root: {
+      id: 'root',
+      type: 'container',
+      props: { maxWidth: 1000, padding: 24, centered: true },
+      children: [
+        {
+          id: 'charts-grid',
+          type: 'grid',
+          props: { columns: 2, gap: 24 },
+          children: [
+            {
+              id: 'bar-card',
+              type: 'card',
+              props: { title: 'Bar Chart' },
+              children: [
+                {
+                  id: 'bar-chart',
+                  type: 'chart',
+                  props: {
+                    chartType: 'bar',
+                    width: 440,
+                    height: 220,
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    series: [
+                      { name: 'Sales', data: [12, 19, 3, 5, 2, 3] },
+                      { name: 'Returns', data: [2, 3, 4, 1, 2, 1] },
+                    ],
+                    title: 'Monthly Performance',
+                    showLegend: true,
+                    xAxis: { label: 'Month', ticks: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], showGrid: true },
+                    yAxis: { label: 'Units', min: 0, max: 20, showGrid: true },
+                    annotations: [{ x: 1, y: 19, label: 'Peak' }],
+                  },
+                },
+              ],
+            },
+            {
+              id: 'line-card',
+              type: 'card',
+              props: { title: 'Line Chart' },
+              children: [
+                {
+                  id: 'line-chart',
+                  type: 'chart',
+                  props: {
+                    chartType: 'line',
+                    width: 440,
+                    height: 220,
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    series: [
+                      { name: 'Visitors', data: [120, 132, 101, 134, 90, 230, 210] },
+                      { name: 'Signups', data: [30, 42, 35, 50, 39, 70, 65] },
+                    ],
+                    title: 'Traffic Trend',
+                    showLegend: true,
+                    xAxis: { label: 'Day', ticks: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], showGrid: true },
+                    yAxis: { label: 'Count', min: 0, showGrid: true },
+                    annotations: [{ x: 5, y: 230, label: 'Campaign' }],
+                  },
+                },
+              ],
+            },
+            {
+              id: 'pie-card',
+              type: 'card',
+              props: { title: 'Pie Chart' },
+              children: [
+                {
+                  id: 'pie-chart',
+                  type: 'chart',
+                  props: {
+                    chartType: 'pie',
+                    width: 440,
+                    height: 220,
+                    labels: ['Product A', 'Product B', 'Product C', 'Product D'],
+                    series: [
+                      { name: 'Share', data: [35, 25, 20, 20] },
+                    ],
+                    title: 'Market Share',
+                    showLegend: true,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  } as unknown as UISchema,
 };
 
 function App() {
   const [selectedAdapter, setSelectedAdapter] = useState<string>('material-ui');
-  const [selectedDemo, setSelectedDemo] = useState<'form' | 'dashboard'>(
+  const [selectedDemo, setSelectedDemo] = useState<'form' | 'dashboard' | 'charts' | 'dynamic'>(
     'form'
   );
+  const [dynamicSchema, setDynamicSchema] = useState<UISchema | null>(null);
+  const [prompt, setPrompt] = useState<string>('');
 
   const adaptersInfo = [
     {
@@ -260,7 +353,26 @@ function App() {
     },
   ];
 
-  const currentSchema = demoSchemas[selectedDemo];
+  const handleGenerateUI = async () => {
+    if (!prompt) return;
+    try {
+      const response = await fetch('http://localhost:8000/generate_ui', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt }),
+      });
+      const data = await response.json();
+      console.log('Generated Schema:', data);
+      setDynamicSchema(data);
+      setSelectedDemo('dynamic');
+    } catch (error) {
+      console.error('Error generating UI:', error);
+    }
+  };
+
+  const currentSchema = selectedDemo === 'dynamic' && dynamicSchema ? dynamicSchema : demoSchemas[selectedDemo];
   const schemaWithAdapter = {
     ...currentSchema,
     metadata: {
@@ -315,7 +427,40 @@ function App() {
             >
               Dashboard Example
             </Button>
+            <Button
+              variant={selectedDemo === 'charts' ? 'secondary' : 'ghost'}
+              onClick={() => setSelectedDemo('charts')}
+              className="text-white hover:bg-slate-700 rounded-full"
+            >
+              Charts Example
+            </Button>
+             <Button
+              variant={selectedDemo === 'dynamic' ? 'secondary' : 'ghost'}
+              onClick={() => setSelectedDemo('dynamic')}
+              className="text-white hover:bg-slate-700 rounded-full"
+            >
+              Dynamic
+            </Button>
           </div>
+        </div>
+        
+        <div className="mb-8">
+          <Card className="bg-slate-800/50 border-slate-700/50">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
+                Generate UI from a Prompt
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex gap-4">
+              <Input 
+                placeholder="e.g., A login form with email and password fields"
+                className="bg-slate-700 border-slate-600 text-white"
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+              />
+              <Button onClick={handleGenerateUI}>Generate UI</Button>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { UIComponent, EventHandler } from '@dgui/schemas';
+import { UIComponent, EventType, EventAction } from '@dgui/schemas';
 import { useEventSystem } from '@dgui/core/src/events';
 import { ComponentFactory } from '@dgui/core/src/factory';
 
@@ -7,30 +7,39 @@ export const DynamicRenderer: React.FC<{ component: UIComponent }> = ({ componen
   const eventSystem = useEventSystem();
   const adapter = ComponentFactory.getAdapter();
 
-  const handleEvent = (event: EventHandler, originalEvent?: React.SyntheticEvent) => {
+  const handleEvent = (action: EventAction, originalEvent?: React.SyntheticEvent) => {
     originalEvent?.preventDefault();
 
-    switch (event.type) {
-      case 'setState':
-        if (event.params?.key && event.params?.value !== undefined) {
-          eventSystem.setState(event.params.key, event.params.value);
+    switch (action.type) {
+      case 'setState': {
+        eventSystem.setState(action.key, action.value);
+        return;
+      }
+      case 'submitForm': {
+        // Basic submit stub; backend handles actual submission
+        eventSystem.setState('submitStatus', 'pending');
+        return;
+      }
+      case 'validate': {
+        // Basic validate flag; detailed rules are backend-defined
+        eventSystem.setState('isValid', true);
+        return;
+      }
+      case 'navigate': {
+        if (action.url) {
+          if (action.target === '_blank') {
+            window.open(action.url, '_blank');
+          } else {
+            window.location.href = action.url;
+          }
         }
-        break;
-      case 'submit':
-        console.log('Form submitted:', eventSystem.state);
-        eventSystem.setState('submitStatus', 'success');
-        break;
-      case 'validate':
-        const isValid = event.params?.validator 
-          ? event.params.validator(eventSystem.state)
-          : true;
-        eventSystem.setState('isValid', isValid);
-        break;
-      case 'custom':
-        if (event.action && eventSystem.handlers[event.action]) {
-          eventSystem.handlers[event.action](event.params);
-        }
-        break;
+        return;
+      }
+      case 'custom': {
+        const handler = action.handler && (eventSystem.handlers as any)[action.handler];
+        if (typeof handler === 'function') handler();
+        return;
+      }
     }
   };
 
@@ -39,20 +48,61 @@ export const DynamicRenderer: React.FC<{ component: UIComponent }> = ({ componen
     return <div>Unknown component type: {component.type}</div>;
   }
 
-  const children = component.children?.map((child) => (
-    <DynamicRenderer key={child.id} component={child} />
-  ));
+  const processedComponent = { ...component } as any;
 
-  const renderedComponent = componentAdapter.render(component, children);
+  // Normalize props: the generator may provide props as null/undefined or as a JSON string
+  const rawProps = (component as any).props;
+  if (rawProps == null) {
+    processedComponent.props = {};
+  } else if (typeof rawProps === 'string') {
+    try {
+      processedComponent.props = JSON.parse(rawProps);
+    } catch {
+      // If parsing fails, fall back to empty object to avoid runtime crashes
+      processedComponent.props = {};
+    }
+  }
 
-  if (component.events && React.isValidElement(renderedComponent)) {
-    const eventProps: Record<string, any> = {};
+  const children = 'children' in processedComponent
+    ? (processedComponent as unknown as { children?: UIComponent[] }).children?.map((child: UIComponent) => (
+        <DynamicRenderer key={child.id} component={child} />
+      ))
+    : undefined;
 
-    Object.entries(component.events).forEach(([eventName, handler]: [string, EventHandler]) => {
-      eventProps[eventName] = (e: React.SyntheticEvent) => handleEvent(handler, e);
-    });
+  const renderedComponent = componentAdapter.render(processedComponent, children);
 
-    return React.cloneElement(renderedComponent, eventProps);
+  if ('events' in processedComponent && React.isValidElement(renderedComponent)) {
+    let rawEvents: unknown = (processedComponent as any).events;
+
+    // Normalize events: accept undefined/null, JSON strings, arrays of tuples, or maps
+    if (typeof rawEvents === 'string') {
+      try {
+        rawEvents = JSON.parse(rawEvents);
+      } catch {
+        rawEvents = undefined;
+      }
+    }
+
+    let entries: [EventType, EventAction][] = [];
+
+    if (Array.isArray(rawEvents)) {
+      // Expecting [EventType, EventAction][]; filter out invalid items defensively
+      entries = (rawEvents as any[])
+        .filter((item) => Array.isArray(item) && item.length === 2)
+        .map((item) => item as [EventType, EventAction]);
+    } else if (rawEvents && typeof rawEvents === 'object') {
+      // Support map form: { onClick: { type: 'setState', ... }, ... }
+      entries = Object.entries(rawEvents as Record<string, EventAction>)
+        .map(([k, v]) => [k as EventType, v]);
+    }
+
+    if (entries.length > 0) {
+      const eventProps: Record<string, any> = {};
+      entries.forEach(([eventName, action]) => {
+        eventProps[eventName] = (e: React.SyntheticEvent) => handleEvent(action, e);
+      });
+      return React.cloneElement(renderedComponent, eventProps);
+    }
   }
 
   return <>{renderedComponent}</>;
