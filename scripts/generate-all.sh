@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Master Code Generation Script for DGUI Schema
+# Master Code Generation Script for Promptius GUI Schema
 # Generates both Python and TypeScript code from JSON Schema
 
 set -e
@@ -8,11 +8,11 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-echo "🚀 Starting DGUI Schema Code Generation..."
+echo "🚀 Starting Promptius GUI Schema Code Generation..."
 echo "📁 Project root: $PROJECT_ROOT"
 
 # Check if schema file exists
-SCHEMA_FILE="$PROJECT_ROOT/schema/dgui-schema.json"
+SCHEMA_FILE="$PROJECT_ROOT/schema/promptius-gui-schema.json"
 if [ ! -f "$SCHEMA_FILE" ]; then
     echo "❌ Schema file not found: $SCHEMA_FILE"
     echo "Please create the JSON Schema file first."
@@ -42,7 +42,7 @@ echo ""
 echo "✅ All code generation completed successfully!"
 echo ""
 echo "📊 Summary:"
-echo "  • Python Pydantic models: python/dgui_schema/__init__.py"
+echo "  • Python Pydantic models: python/promptius_gui_schema/__init__.py"
 echo "  • TypeScript types: js/packages/schemas/src/index.ts"
 if [ "$1" = "--with-zod" ]; then
     echo "  • Zod schemas: js/packages/schemas/src/zod.ts"

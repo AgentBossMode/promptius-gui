@@ -1,6 +1,6 @@
 # Release Process
 
-This document describes how to create releases for the DGUI project. The project uses automated semantic versioning with synchronized versions across Python (PyPI) and JavaScript (npm) packages.
+This document describes how to create releases for the Promptius GUI project. The project uses automated semantic versioning with synchronized versions across Python (PyPI) and JavaScript (npm) packages.
 
 ## Overview
 
@@ -30,7 +30,7 @@ git push origin v1.2.3
 
 ### 3. Monitor the Release
 
-1. Go to the [Actions tab](https://github.com/AgentBossMode/DGUI/actions) in GitHub
+1. Go to the [Actions tab](https://github.com/AgentBossMode/promptius-gui/actions) in GitHub
 2. Look for the "Publish Packages" workflow triggered by your tag
 3. Verify both Python and JavaScript publishing jobs complete successfully
 
@@ -51,15 +51,15 @@ When you push a tag, the GitHub Actions workflow will:
 The following packages are automatically versioned and published:
 
 ### Python (PyPI)
-- `dgui-schema` - Type-safe UI schema definitions
+- `promptius-gui-schema` - Type-safe UI schema definitions
 
 ### JavaScript (npm)
-- `@dgui/core` - Core dynamic UI factory
-- `@dgui/schemas` - Type definitions for UI schemas
-- `@dgui/adapters` - Framework adapter definitions
-- `@dgui/material-ui` - Material UI adapter
-- `@dgui/ant-design` - Ant Design adapter
-- `@dgui/chakra-ui` - Chakra UI adapter
+- `@promptius-gui/core` - Core dynamic UI factory
+- `@promptius-gui/schemas` - Type definitions for UI schemas
+- `@promptius-gui/adapters` - Framework adapter definitions
+- `@promptius-gui/material-ui` - Material UI adapter
+- `@promptius-gui/ant-design` - Ant Design adapter
+- `@promptius-gui/chakra-ui` - Chakra UI adapter
 
 ## Conventional Commits
 

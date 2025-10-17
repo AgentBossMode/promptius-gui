@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# TypeScript Code Generation Script for DGUI Schema
+# TypeScript Code Generation Script for Promptius GUI Schema
 # Generates TypeScript types from JSON Schema
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-SCHEMA_FILE="$PROJECT_ROOT/schema/dgui-schema.json"
+SCHEMA_FILE="$PROJECT_ROOT/schema/promptius-gui-schema.json"
 OUTPUT_FILE="$PROJECT_ROOT/js/packages/schemas/src/index.ts"
 
 echo "🔧 Generating TypeScript types from JSON Schema..."
@@ -49,9 +49,9 @@ npx json-schema-to-typescript \
 # Add custom header and organize exports
 cat > "$OUTPUT_FILE.tmp" << 'EOF'
 /**
- * DGUI Schemas - Type definitions for UI component schemas
+ * Promptius GUI Schemas - Type definitions for UI component schemas
  * 
- * This file is auto-generated from schema/dgui-schema.json
+ * This file is auto-generated from schema/promptius-gui-schema.json
  * DO NOT EDIT MANUALLY - Use scripts/generate-typescript.sh to regenerate
  */
 

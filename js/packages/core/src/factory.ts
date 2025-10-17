@@ -1,4 +1,4 @@
-import { AdapterRegistry, ComponentAdapter } from '@dgui/adapters';
+import { AdapterRegistry, ComponentAdapter } from '@promptius-gui/adapters';
 
 export class ComponentFactory {
   private static adapters: AdapterRegistry = {};

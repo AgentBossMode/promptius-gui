@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Zod Schema Generation Script for DGUI Schema
+# Zod Schema Generation Script for Promptius GUI Schema
 # Generates Zod schemas for runtime validation alongside TypeScript types
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-SCHEMA_FILE="$PROJECT_ROOT/schema/dgui-schema.json"
+SCHEMA_FILE="$PROJECT_ROOT/schema/promptius-gui-schema.json"
 OUTPUT_FILE="$PROJECT_ROOT/js/packages/schemas/src/zod.ts"
 
 echo "🔍 Generating Zod schemas from JSON Schema..."
@@ -45,9 +45,9 @@ npx json-schema-to-zod \
 # Add custom header and organize exports
 cat > "$OUTPUT_FILE.tmp" << 'EOF'
 /**
- * DGUI Zod Schemas - Runtime validation schemas for UI components
+ * Promptius GUI Zod Schemas - Runtime validation schemas for UI components
  * 
- * This file is auto-generated from schema/dgui-schema.json
+ * This file is auto-generated from schema/promptius-gui-schema.json
  * DO NOT EDIT MANUALLY - Use scripts/generate-zod.sh to regenerate
  */
 

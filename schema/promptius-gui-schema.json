@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/AgentBossMode/DGUI/schema/dgui-schema.json",
-  "title": "DGUI Schema",
+  "$id": "https://github.com/AgentBossMode/promptius-gui/schema/promptius-gui-schema.json",
+  "title": "Promptius GUI Schema",
   "description": "Type-safe UI schema definitions for cross-platform UI generation",
   "version": "1.0.0",
   "type": "object",

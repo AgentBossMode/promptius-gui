@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Input, Typography, Card, Alert, Row, Col, Space } from 'antd';
-import { AdapterRegistry } from '@dgui/adapters';
-import { ButtonProps, InputProps, TextProps, CardProps, AlertProps, ContainerProps, GridProps, StackProps, ChartProps } from '@dgui/schemas';
-import { ComponentFactory } from '@dgui/core';
+import { AdapterRegistry } from '@promptius-gui/adapters';
+import { ButtonProps, InputProps, TextProps, CardProps, AlertProps, ContainerProps, GridProps, StackProps, ChartProps } from '@promptius-gui/schemas';
+import { ComponentFactory } from '@promptius-gui/core';
 
 const { Text, Title, Paragraph } = Typography;
 

@@ -11,9 +11,9 @@ import {
   Stack,
   Box,
 } from '@mui/material';
-import { AdapterRegistry } from '@dgui/adapters';
-import { ButtonProps, InputProps, TextProps, CardProps, AlertProps, ContainerProps, GridProps, StackProps, UIComponent, ChartProps } from '@dgui/schemas';
-import { ComponentFactory } from '@dgui/core';
+import { AdapterRegistry } from '@promptius-gui/adapters';
+import { ButtonProps, InputProps, TextProps, CardProps, AlertProps, ContainerProps, GridProps, StackProps, UIComponent, ChartProps } from '@promptius-gui/schemas';
+import { ComponentFactory } from '@promptius-gui/core';
 
 export const materialUIAdapter: AdapterRegistry['material-ui'] = {
   button: {

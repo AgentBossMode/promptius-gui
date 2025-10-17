@@ -10,11 +10,11 @@ import {
   CardTitle,
 } from '../src/components/ui/card';
 import { Input } from '../src/components/ui/input';
-import { UISchema } from '@dgui/schemas';
-import UIFactory from '@dgui/core';
-import '@dgui/material-ui';
-import '@dgui/chakra-ui';
-import '@dgui/ant-design';
+import { UISchema } from '@promptius-gui/schemas';
+import UIFactory from '@promptius-gui/core';
+import '@promptius-gui/material-ui';
+import '@promptius-gui/chakra-ui';
+import '@promptius-gui/ant-design';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import toast, { Toaster } from 'react-hot-toast';

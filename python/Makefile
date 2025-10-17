@@ -1,4 +1,4 @@
-# DGUI Python Build Makefile
+# Promptius GUI Python Build Makefile
 # Integrates code generation with Python build process
 
 .PHONY: generate build install dev test clean

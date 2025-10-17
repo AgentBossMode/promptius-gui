@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Python Code Generation Script for DGUI Schema
+# Python Code Generation Script for Promptius GUI Schema
 # Generates Pydantic models from JSON Schema using AST-based approach
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-SCHEMA_FILE="$PROJECT_ROOT/schema/dgui-schema.json"
-OUTPUT_FILE="$PROJECT_ROOT/python/dgui_schema/__init__.py"
+SCHEMA_FILE="$PROJECT_ROOT/schema/promptius-gui-schema.json"
+OUTPUT_FILE="$PROJECT_ROOT/python/promptius_gui_schema/__init__.py"
 
 echo "🔧 Generating Python Pydantic models from JSON Schema using AST-based approach..."
 

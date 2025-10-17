@@ -1,13 +1,13 @@
 {
-  "name": "@dgui/material-ui",
+  "name": "@promptius-gui/material-ui",
   "version": "1.0.0",
-  "description": "DGUI Material UI Adapter - Dynamic UI components for Material UI",
+  "description": "Promptius GUI Material UI Adapter - Dynamic UI components for Material UI",
   "keywords": ["react", "ui", "material-ui", "mui", "adapter", "components"],
   "author": "Kanishk Gupta <kanishkgupta2000@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AgentBossMode/DGUI.git"
+    "url": "https://github.com/AgentBossMode/promptius-gui.git"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
     "build": "tsc -b"
   },
   "peerDependencies": {
-    "@dgui/core": "1.0.0",
+    "@promptius-gui/core": "1.0.0",
     "@mui/material": ">=5.0.0",
     "react": ">=16.8.0",
     "@emotion/styled": ">=11.0.0"

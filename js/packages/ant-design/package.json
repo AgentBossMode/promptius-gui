@@ -1,13 +1,13 @@
 {
-  "name": "@dgui/ant-design",
+  "name": "@promptius-gui/ant-design",
   "version": "1.0.0",
-  "description": "DGUI Ant Design Adapter - Dynamic UI components for Ant Design",
+  "description": "Promptius GUI Ant Design Adapter - Dynamic UI components for Ant Design",
   "keywords": ["react", "ui", "ant-design", "adapter", "components"],
   "author": "Kanishk Gupta <kanishkgupta2000@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AgentBossMode/DGUI.git"
+    "url": "https://github.com/AgentBossMode/promptius-gui.git"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
     "build": "tsc -b"
   },
   "peerDependencies": {
-    "@dgui/core": "1.0.0",
+    "@promptius-gui/core": "1.0.0",
     "react": ">=16.8.0",
     "antd": ">=5.0.0"
   },

@@ -1,5 +1,5 @@
 import React from 'react';
-import { UISchema } from '@dgui/schemas';
+import { UISchema } from '@promptius-gui/schemas';
 import { EventSystemProvider } from './events';
 import { ComponentFactory } from './factory';
 import { DynamicRenderer } from './renderer';
@@ -28,4 +28,4 @@ export default UIFactory;
 export { EventSystemProvider, useEventSystem } from './events';
 export { ComponentFactory } from './factory';
 export { DynamicRenderer } from './renderer';
-export type { AdapterRegistry, ComponentAdapter } from '@dgui/adapters';
+export type { AdapterRegistry, ComponentAdapter } from '@promptius-gui/adapters';

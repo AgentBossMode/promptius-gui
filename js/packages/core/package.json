@@ -1,13 +1,13 @@
 {
-  "name": "@dgui/core",
+  "name": "@promptius-gui/core",
   "version": "1.0.0",
-  "description": "DGUI Core - Dynamic UI Factory for React",
+  "description": "Promptius GUI Core - Dynamic UI Factory for React",
   "keywords": ["react", "ui", "dynamic", "factory", "components"],
   "author": "Kanishk Gupta <kanishkgupta2000@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AgentBossMode/DGUI.git"
+    "url": "https://github.com/AgentBossMode/promptius-gui.git"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,8 +18,8 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "@dgui/schemas": "1.0.0",
-    "@dgui/adapters": "1.0.0"
+    "@promptius-gui/schemas": "1.0.0",
+    "@promptius-gui/adapters": "1.0.0"
   },
   "peerDependencies": {
     "react": ">=16.8.0"

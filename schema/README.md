@@ -1,12 +1,12 @@
-# DGUI Schema System
+# Promptius GUI Schema System
 
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/AgentBossMode/DGUI)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/AgentBossMode/promptius-gui)
 
-This directory contains the JSON Schema-based code generation system for DGUI. The system uses a single JSON Schema definition as the source of truth to generate type-safe code for multiple programming languages.
+This directory contains the JSON Schema-based code generation system for Promptius GUI. The system uses a single JSON Schema definition as the source of truth to generate type-safe code for multiple programming languages.
 
 ## Overview
 
-The DGUI Schema system eliminates code duplication by maintaining a single JSON Schema definition that automatically generates:
+The Promptius GUI Schema system eliminates code duplication by maintaining a single JSON Schema definition that automatically generates:
 
 - **Python**: Pydantic models with full validation
 - **TypeScript**: Type definitions and interfaces
@@ -14,7 +14,7 @@ The DGUI Schema system eliminates code duplication by maintaining a single JSON 
 
 ## Files
 
-- `dgui-schema.json` - The single source of truth JSON Schema definition
+- `promptius-gui-schema.json` - The single source of truth JSON Schema definition
 - `../scripts/` - Code generation scripts for each language
 
 ## Usage
@@ -51,7 +51,7 @@ npm run generate:watch
 
 ## Adding New Components
 
-1. **Edit the JSON Schema**: Add your new component definition to `dgui-schema.json`
+1. **Edit the JSON Schema**: Add your new component definition to `promptius-gui-schema.json`
 2. **Regenerate Code**: Run `./scripts/generate-all.sh`
 3. **Update Tests**: Add tests for the new component
 4. **Update Documentation**: Document the new component
@@ -86,7 +86,7 @@ npm run generate:watch
 
 ## Generated Output
 
-### Python (`python/dgui_schema/__init__.py`)
+### Python (`python/promptius_gui_schema/__init__.py`)
 - Pydantic v2 models with full validation
 - Enum classes for type safety
 - Field validators and constraints
@@ -110,7 +110,7 @@ npm run generate:watch
 {
   "scripts": {
     "generate": "../scripts/generate-all.sh",
-    "generate:watch": "nodemon --watch ../schema/dgui-schema.json --exec \"../scripts/generate-all.sh\"",
+    "generate:watch": "nodemon --watch ../schema/promptius-gui-schema.json --exec \"../scripts/generate-all.sh\"",
     "prebuild": "npm run generate"
   }
 }
@@ -133,19 +133,19 @@ The system is designed to easily add support for additional languages:
 ### Go
 ```bash
 # Add to scripts/generate-go.sh
-go-jsonschema -p main -o generated.go schema/dgui-schema.json
+go-jsonschema -p main -o generated.go schema/promptius-gui-schema.json
 ```
 
 ### Rust
 ```bash
 # Add to scripts/generate-rust.sh
-schemafy schema/dgui-schema.json > src/schema.rs
+schemafy schema/promptius-gui-schema.json > src/schema.rs
 ```
 
 ### Java
 ```bash
 # Add to scripts/generate-java.sh
-jsonschema2pojo -s schema/dgui-schema.json -t src/main/java
+jsonschema2pojo -s schema/promptius-gui-schema.json -t src/main/java
 ```
 
 ## Schema Structure
@@ -169,7 +169,7 @@ The generated code includes:
 
 ## Development Workflow
 
-1. **Schema Changes**: Edit `dgui-schema.json`
+1. **Schema Changes**: Edit `promptius-gui-schema.json`
 2. **Auto-generation**: Run `./scripts/generate-all.sh`
 3. **Testing**: Verify generated code works correctly
 4. **Integration**: Update imports in existing code

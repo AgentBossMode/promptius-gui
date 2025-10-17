@@ -1,7 +1,7 @@
 /**
- * DGUI Schemas - Type definitions for UI component schemas
+ * Promptius GUI Schemas - Type definitions for UI component schemas
  * 
- * This file is auto-generated from schema/dgui-schema.json
+ * This file is auto-generated from schema/promptius-gui-schema.json
  * DO NOT EDIT MANUALLY - Use scripts/generate-typescript.sh to regenerate
  */
 

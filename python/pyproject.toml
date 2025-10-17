@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "dgui-schema"
+name = "promptius-gui-schema"
 version = "0.1.0"
 description = "Type-safe UI schema definitions for cross-platform UI generation"
 readme = "README.md"
@@ -37,10 +37,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/AgentBossMode/DGUI"
-Repository = "https://github.com/AgentBossMode/DGUI"
-Documentation = "https://github.com/AgentBossMode/DGUI#readme"
-"Bug Tracker" = "https://github.com/AgentBossMode/DGUI/issues"
+Homepage = "https://github.com/AgentBossMode/promptius-gui"
+Repository = "https://github.com/AgentBossMode/promptius-gui"
+Documentation = "https://github.com/AgentBossMode/promptius-gui#readme"
+"Bug Tracker" = "https://github.com/AgentBossMode/promptius-gui/issues"
 
 [project.optional-dependencies]
 dev = [
@@ -53,7 +53,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["dgui_schema"]
+packages = ["promptius_gui_schema"]
 
 [tool.black]
 line-length = 88

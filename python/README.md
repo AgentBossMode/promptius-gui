@@ -1,12 +1,12 @@
-# DGUI Schema
+# Promptius GUI Schema
 
-[![PyPI version](https://badge.fury.io/py/dgui-schema.svg)](https://badge.fury.io/py/dgui-schema)
+[![PyPI version](https://badge.fury.io/py/promptius-gui-schema.svg)](https://badge.fury.io/py/promptius-gui-schema)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **Type-safe UI schema definitions for cross-platform UI generation**
 
-DGUI Schema provides robust, type-safe UI schema definitions that can be used to generate UI components across different frameworks (React, Vue, Angular, etc.) with full TypeScript compatibility.
+Promptius GUI Schema provides robust, type-safe UI schema definitions that can be used to generate UI components across different frameworks (React, Vue, Angular, etc.) with full TypeScript compatibility.
 
 ## Features
 
@@ -20,13 +20,13 @@ DGUI Schema provides robust, type-safe UI schema definitions that can be used to
 ## Installation
 
 ```bash
-pip install dgui-schema
+pip install promptius-gui-schema
 ```
 
 ## Quick Start
 
 ```python
-from dgui_schema import UISchema, UIMetadata, ButtonComponent, ButtonProps, ButtonVariant
+from promptius_gui_schema import UISchema, UIMetadata, ButtonComponent, ButtonProps, ButtonVariant
 
 # Create a simple button schema
 schema = UISchema(
@@ -81,7 +81,7 @@ print(json_schema)
 ### Event Handling
 
 ```python
-from dgui_schema import (
+from promptius_gui_schema import (
     EventType, SetStateAction, SubmitFormAction, 
     NavigateAction, EventBinding
 )
@@ -103,7 +103,7 @@ button = ButtonComponent(
 ### Complex Layouts
 
 ```python
-from dgui_schema import (
+from promptius_gui_schema import (
     ContainerComponent, ContainerProps,
     GridComponent, GridProps,
     CardComponent, CardProps,
@@ -144,7 +144,7 @@ dashboard = UISchema(
 ### Chart Components
 
 ```python
-from dgui_schema import (
+from promptius_gui_schema import (
     ChartComponent, ChartProps, ChartType, ChartSeries
 )
 
@@ -165,10 +165,10 @@ chart = ChartComponent(
 
 ## TypeScript Integration
 
-The package is designed to work seamlessly with TypeScript. The corresponding TypeScript definitions are available in the main DGUI repository:
+The package is designed to work seamlessly with TypeScript. The corresponding TypeScript definitions are available in the main Promptius GUI repository:
 
 ```typescript
-import { UISchema, ButtonComponent, ButtonProps } from '@dgui/schemas';
+import { UISchema, ButtonComponent, ButtonProps } from '@promptius-gui/schemas';
 
 const schema: UISchema = {
   metadata: {
@@ -191,7 +191,7 @@ const schema: UISchema = {
 All schemas are validated at runtime using Pydantic:
 
 ```python
-from dgui_schema import UISchema, UIMetadata, ButtonComponent, ButtonProps
+from promptius_gui_schema import UISchema, UIMetadata, ButtonComponent, ButtonProps
 
 try:
     # This will raise a validation error
@@ -211,8 +211,8 @@ except ValidationError as e:
 ### Installation for Development
 
 ```bash
-git clone https://github.com/AgentBossMode/DGUI.git
-cd DGUI/python
+git clone https://github.com/AgentBossMode/promptius-gui.git
+cd promptius-gui/python
 pip install -e .
 ```
 
@@ -226,8 +226,8 @@ pytest
 ### Code Formatting
 
 ```bash
-black dgui_schema/
-isort dgui_schema/
+black promptius_gui_schema/
+isort promptius_gui_schema/
 ```
 
 ## API Reference
@@ -252,7 +252,7 @@ isort dgui_schema/
 
 ## Contributing
 
-Contributions are welcome! Please read our [Contributing Guide](https://github.com/AgentBossMode/DGUI/blob/main/CONTRIBUTING.md) for details.
+Contributions are welcome! Please read our [Contributing Guide](https://github.com/AgentBossMode/promptius-gui/blob/main/CONTRIBUTING.md) for details.
 
 ## License
 
@@ -260,12 +260,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Related Projects
 
-- [DGUI Core](https://github.com/AgentBossMode/DGUI) - Main DGUI repository
-- [DGUI React](https://github.com/AgentBossMode/DGUI/tree/main/js/packages/core) - React renderer
-- [DGUI Vue](https://github.com/AgentBossMode/DGUI) - Vue renderer (coming soon)
+- [Promptius GUI Core](https://github.com/AgentBossMode/promptius-gui) - Main Promptius GUI repository
+- [Promptius GUI React](https://github.com/AgentBossMode/promptius-gui/tree/main/js/packages/core) - React renderer
+- [Promptius GUI Vue](https://github.com/AgentBossMode/promptius-gui) - Vue renderer (coming soon)
 
 ## Support
 
-- 📖 [Documentation](https://github.com/AgentBossMode/DGUI#readme)
-- 🐛 [Issue Tracker](https://github.com/AgentBossMode/DGUI/issues)
-- 💬 [Discussions](https://github.com/AgentBossMode/DGUI/discussions)
+- 📖 [Documentation](https://github.com/AgentBossMode/promptius-gui#readme)
+- 🐛 [Issue Tracker](https://github.com/AgentBossMode/promptius-gui/issues)
+- 💬 [Discussions](https://github.com/AgentBossMode/promptius-gui/discussions)

@@ -1,5 +1,5 @@
 import React from 'react';
-import { UIComponent, EventType, EventAction } from '@dgui/schemas';
+import { UIComponent, EventType, EventAction } from '@promptius-gui/schemas';
 import { useEventSystem } from './events';
 import { ComponentFactory } from './factory';
 

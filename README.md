@@ -1,21 +1,21 @@
-# DGUI - Dynamic UI Factory
+# Promptius GUI - Dynamic UI Factory
 
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/AgentBossMode/DGUI)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/AgentBossMode/promptius-gui)
 
 This project is a JSON-driven React UI factory that can dynamically render UIs based on a JSON schema. It supports multiple UI frameworks like Material UI, Chakra UI, and Ant Design.
 
 ## Architecture
 
-DGUI uses a **JSON Schema-based code generation system** that eliminates code duplication and enables easy expansion to additional languages:
+Promptius GUI uses a **JSON Schema-based code generation system** that eliminates code duplication and enables easy expansion to additional languages:
 
-- **Single Source of Truth**: `schema/dgui-schema.json` defines all UI components, props, and events
+- **Single Source of Truth**: `schema/promptius-gui-schema.json` defines all UI components, props, and events
 - **Multi-Language Generation**: Automatically generates type-safe code for Python (Pydantic) and TypeScript
 - **Runtime Validation**: Full validation support with Pydantic (Python) and Zod (TypeScript)
 - **Extensible**: Easy to add support for Go, Rust, Java, C#, and other languages
 
 ### Generated Code
 
-- **Python**: `python/dgui_schema/__init__.py` - Pydantic models with validation
+- **Python**: `python/promptius_gui_schema/__init__.py` - Pydantic models with validation
 - **TypeScript**: `js/packages/schemas/src/index.ts` - Type definitions and interfaces
 - **Zod**: `js/packages/schemas/src/zod.ts` - Runtime validation schemas (optional)
 

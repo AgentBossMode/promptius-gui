@@ -1,5 +1,5 @@
 {
-  "name": "dgui-monorepo",
+  "name": "promptius-gui-monorepo",
   "private": true,
   "version": "1.0.0",
   "description": "The frontend code to support dynamic UI generation by Large Language Models",
@@ -12,14 +12,14 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AgentBossMode/DGUI.git"
+    "url": "https://github.com/AgentBossMode/promptius-gui.git"
   },
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
     "generate": "../scripts/generate-all.sh",
-    "generate:watch": "nodemon --watch ../schema/dgui-schema.json --exec \"../scripts/generate-all.sh\"",
+    "generate:watch": "nodemon --watch ../schema/promptius-gui-schema.json --exec \"../scripts/generate-all.sh\"",
     "prebuild": "npm run generate",
     "build": "npm run build -ws",
     "dev": "npm run build && vite"

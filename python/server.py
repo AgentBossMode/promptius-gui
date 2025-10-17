@@ -5,7 +5,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage
 from dotenv import load_dotenv
 
-from dgui_schema import UISchema
+from promptius_gui_schema import UISchema
 import uvicorn
 
 load_dotenv()

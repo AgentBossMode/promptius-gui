@@ -1,11 +1,11 @@
 """
-DGUI Schema - Type-safe UI schema definitions for cross-platform UI generation.
+Promptius GUI Schema - Type-safe UI schema definitions for cross-platform UI generation.
 
 This package provides robust, type-safe UI schema definitions that can be used
 to generate UI components across different frameworks (React, Vue, Angular, etc.)
 with full TypeScript compatibility.
 
-This file is auto-generated from schema/dgui-schema.json
+This file is auto-generated from schema/promptius-gui-schema.json
 DO NOT EDIT MANUALLY - Use scripts/generate-python-ast.py to regenerate
 """
 

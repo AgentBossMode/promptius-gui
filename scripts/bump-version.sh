@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Version bumping script for DGUI packages
+# Version bumping script for Promptius GUI packages
 # Usage: ./scripts/bump-version.sh <version>
 # Example: ./scripts/bump-version.sh 1.2.3
 
@@ -49,7 +49,7 @@ done
 # Update internal dependencies in adapter packages
 echo "Updating internal dependencies..."
 
-# Update @dgui/core references in adapter packages
+# Update @promptius-gui/core references in adapter packages
 ADAPTER_PACKAGES=(
     "js/packages/adapters/package.json"
     "js/packages/material-ui/package.json"
@@ -58,15 +58,15 @@ ADAPTER_PACKAGES=(
 )
 
 for package in "${ADAPTER_PACKAGES[@]}"; do
-    echo "Updating @dgui/core dependency in $package..."
-    sed -i.bak "s/\"@dgui\/core\": \"[^\"]*\"/\"@dgui\/core\": \"$VERSION\"/" "$package"
+    echo "Updating @promptius-gui/core dependency in $package..."
+    sed -i.bak "s/\"@promptius-gui\/core\": \"[^\"]*\"/\"@promptius-gui\/core\": \"$VERSION\"/" "$package"
     rm "$package.bak"
 done
 
-# Update @dgui/schemas and @dgui/adapters references in core package
+# Update @promptius-gui/schemas and @promptius-gui/adapters references in core package
 echo "Updating dependencies in js/packages/core/package.json..."
-sed -i.bak "s/\"@dgui\/schemas\": \"[^\"]*\"/\"@dgui\/schemas\": \"$VERSION\"/" "js/packages/core/package.json"
-sed -i.bak "s/\"@dgui\/adapters\": \"[^\"]*\"/\"@dgui\/adapters\": \"$VERSION\"/" "js/packages/core/package.json"
+sed -i.bak "s/\"@promptius-gui\/schemas\": \"[^\"]*\"/\"@promptius-gui\/schemas\": \"$VERSION\"/" "js/packages/core/package.json"
+sed -i.bak "s/\"@promptius-gui\/adapters\": \"[^\"]*\"/\"@promptius-gui\/adapters\": \"$VERSION\"/" "js/packages/core/package.json"
 rm js/packages/core/package.json.bak
 
 echo "Version bump completed successfully!"

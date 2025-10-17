@@ -12,12 +12,12 @@
       "forceConsistentCasingInFileNames": true,
       "baseUrl": ".",
       "paths": {
-        "@dgui/schemas": ["packages/schemas/src"],
-        "@dgui/adapters": ["packages/adapters/src"],
-        "@dgui/core": ["packages/core/src"],
-        "@dgui/material-ui": ["packages/material-ui/src"],
-        "@dgui/chakra-ui": ["packages/chakra-ui/src"],
-        "@dgui/ant-design": ["packages/ant-design/src"]
+        "@promptius-gui/schemas": ["packages/schemas/src"],
+        "@promptius-gui/adapters": ["packages/adapters/src"],
+        "@promptius-gui/core": ["packages/core/src"],
+        "@promptius-gui/material-ui": ["packages/material-ui/src"],
+        "@promptius-gui/chakra-ui": ["packages/chakra-ui/src"],
+        "@promptius-gui/ant-design": ["packages/ant-design/src"]
       }
     }
   }
