@@ -11,3 +11,5 @@ python/__pycache__/
 python/.pytest_cache/
 python/.coverage
 python/htmlcov/
+
+*.env
