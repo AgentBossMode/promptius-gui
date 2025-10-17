@@ -10,7 +10,7 @@ export const adapters: AdapterRegistry = {
 };
 
 export class ComponentFactory {
-  private static currentAdapter: keyof typeof adapters = 'chakra-ui';
+  private static currentAdapter: keyof typeof adapters = 'material-ui';
 
   static useAdapter(adapterName: keyof typeof adapters) {
     if (!adapters[adapterName]) {

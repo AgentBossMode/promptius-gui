@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  CardRoot,
+  Card,
   Box,
   Button,
   CardBody,
@@ -12,7 +12,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { AdapterRegistry } from '@dgui/adapters';
-import { UIComponent } from '@dgui/core';
+import { UIComponent } from '@dgui/schemas';
 
 export const chakraUIAdapter: AdapterRegistry['chakra-ui'] = {
   button: {
@@ -53,7 +53,7 @@ export const chakraUIAdapter: AdapterRegistry['chakra-ui'] = {
   },
   card: {
     render: (component, children) => (
-      <CardRoot className={component.props?.className}>
+      <Card className={component.props?.className}>
         {component.props?.title && (
           <CardHeader>
             <Heading size="md">{component.props?.title}</Heading>
@@ -63,7 +63,7 @@ export const chakraUIAdapter: AdapterRegistry['chakra-ui'] = {
           </CardHeader>
         )}
         <CardBody>{children}</CardBody>
-      </CardRoot>
+      </Card>
     ),
   },
   alert: {
@@ -109,7 +109,7 @@ export const chakraUIAdapter: AdapterRegistry['chakra-ui'] = {
     render: (component, children) => (
       <Stack
         direction={component.layout?.direction || 'column'}
-        borderSpacing={component.layout?.gap || 4}
+        spacing={component.layout?.gap || 4}
         style={component.props?.style}
       >
         {children}

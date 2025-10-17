@@ -6,6 +6,7 @@
       "declaration": true,
       "composite": true
     },
-    "include": ["src"]
+    "include": ["src"],
+    "references": [{ "path": "../adapters" }]
   }
   

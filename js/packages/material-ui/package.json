@@ -11,7 +11,10 @@
   },
   "peerDependencies": {
     "@dgui/core": "1.0.0",
-    "react": ">=16.8.0",
-    "@mui/material": ">=5.0.0"
+    "@mui/material": ">=5.0.0",
+    "react": ">=16.8.0"
+  },
+  "dependencies": {
+    "@emotion/styled": "^11.14.1"
   }
 }

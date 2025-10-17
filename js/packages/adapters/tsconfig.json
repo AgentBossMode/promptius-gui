@@ -5,7 +5,7 @@
     "rootDir": "src",
     "outDir": "dist",
     "declaration": true,
-    "baseUrl": "."
+    "composite": true
   },
   "include": ["src"],
   "references": [{ "path": "../schemas" }]

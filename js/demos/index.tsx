@@ -2,11 +2,18 @@ import '../src/index.css';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { Button } from '../src/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../src/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../src/components/ui/card';
 import { Alert, AlertDescription } from '../src/components/ui/alert';
 import { AlertCircle, CheckCircle2, Package } from 'lucide-react';
-import { UISchema } from '../packages/core/src/schemas';
+import { UISchema } from '../packages/schemas';
 import UIFactory from '../packages/core/src/index';
+import { ChakraProvider } from '@chakra-ui/react';
 
 const demoSchemas = {
   form: {
@@ -215,7 +222,8 @@ const demoSchemas = {
               type: 'alert',
               props: {
                 variant: 'default',
-                message: 'System is operating normally. All services are up and running.',
+                message:
+                  'System is operating normally. All services are up and running.',
               },
             },
           ],
@@ -226,14 +234,30 @@ const demoSchemas = {
 };
 
 function App() {
-  const [selectedAdapter, setSelectedAdapter] = useState<string>('shadcn');
-  const [selectedDemo, setSelectedDemo] = useState<'form' | 'dashboard'>('form');
+  const [selectedAdapter, setSelectedAdapter] = useState<string>('material-ui');
+  const [selectedDemo, setSelectedDemo] = useState<'form' | 'dashboard'>(
+    'form'
+  );
 
   const adaptersInfo = [
-    { id: 'shadcn', name: 'ShadCN UI', color: 'bg-slate-500' },
-    { id: 'material-ui', name: 'Material UI', color: 'bg-blue-600' },
-    { id: 'chakra-ui', name: 'Chakra UI', color: 'bg-teal-500' },
-    { id: 'ant-design', name: 'Ant Design', color: 'bg-blue-500' },
+    {
+      id: 'material-ui',
+      name: 'Material UI',
+      color: 'bg-blue-600',
+      ring: 'ring-blue-500',
+    },
+    {
+      id: 'chakra-ui',
+      name: 'Chakra UI',
+      color: 'bg-teal-500',
+      ring: 'ring-teal-500',
+    },
+    {
+      id: 'ant-design',
+      name: 'Ant Design',
+      color: 'bg-rose-500',
+      ring: 'ring-rose-500',
+    },
   ];
 
   const currentSchema = demoSchemas[selectedDemo];
@@ -246,118 +270,108 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            🧩 JSON-Driven React UI Factory
+        <header className="text-center mb-16">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-cyan-500">
+              Dynamic UI Factory
+            </span>
           </h1>
-          <p className="text-lg text-gray-600 mb-2">
-            Multi-Framework Adapter System
+          <p className="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto">
+            One Schema, Multiple Frameworks. Instantly Rendered.
           </p>
-          <p className="text-sm text-gray-500 mb-6">
-            Switch between UI frameworks and examples dynamically using the same JSON schema
-          </p>
-          
-          <div className="flex flex-wrap justify-center gap-3 mb-4">
+        </header>
+
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-12">
+          <div className="flex flex-wrap justify-center gap-4 p-2 bg-slate-800/60 rounded-full shadow-lg">
             {adaptersInfo.map((adapter) => (
               <button
                 key={adapter.id}
                 onClick={() => setSelectedAdapter(adapter.id)}
-                className={`px-6 py-3 rounded-lg font-medium transition-all shadow-md hover:shadow-lg ${
+                className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 ${
                   selectedAdapter === adapter.id
-                    ? `${adapter.color} text-white scale-105`
-                    : 'bg-white text-gray-700 hover:bg-gray-50'
+                    ? `${adapter.color} text-white shadow-lg transform scale-105 ${adapter.ring}`
+                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
                 }`}
               >
-                <div className="flex items-center gap-2">
-                  <Package className="h-4 w-4" />
-                  {adapter.name}
-                </div>
+                {adapter.name}
               </button>
             ))}
           </div>
-
-          <div className="flex justify-center gap-3 mb-4">
+          <div className="w-full sm:w-px h-px sm:h-10 bg-slate-700" />
+          <div className="flex justify-center gap-3 p-2 bg-slate-800/60 rounded-full shadow-lg">
             <Button
-              variant={selectedDemo === 'form' ? 'default' : 'outline'}
+              variant={selectedDemo === 'form' ? 'secondary' : 'ghost'}
               onClick={() => setSelectedDemo('form')}
+              className="text-white hover:bg-slate-700 rounded-full"
             >
               Form Example
             </Button>
             <Button
-              variant={selectedDemo === 'dashboard' ? 'default' : 'outline'}
+              variant={selectedDemo === 'dashboard' ? 'secondary' : 'ghost'}
               onClick={() => setSelectedDemo('dashboard')}
+              className="text-white hover:bg-slate-700 rounded-full"
             >
               Dashboard Example
             </Button>
           </div>
-
-          <div className="inline-block px-4 py-2 bg-white rounded-lg shadow-sm border border-gray-200">
-            <p className="text-sm text-gray-600">
-              <strong>Active:</strong>{' '}
-              <span className="font-mono text-blue-600">{selectedAdapter}</span>
-              {' • '}
-              <span className="font-mono text-purple-600">{selectedDemo}</span>
-            </p>
-          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle>JSON Schema Definition</CardTitle>
-                <CardDescription>
-                  Framework-agnostic component structure
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-auto max-h-[600px] text-xs">
-                  {JSON.stringify(currentSchema, null, 2)}
-                </pre>
-              </CardContent>
-            </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <div className="bg-slate-800/50 rounded-2xl shadow-2xl backdrop-blur-lg border border-slate-700/50 transition-all duration-300 hover:border-slate-600 hover:shadow-purple-500/10">
+            <CardHeader className="border-b border-slate-700/50">
+              <CardTitle className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500">
+                JSON Schema
+              </CardTitle>
+              <CardDescription className="text-slate-400">
+                The declarative heart of your UI.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-0">
+              <pre className="bg-transparent text-slate-300 p-6 rounded-b-2xl overflow-auto max-h-[60vh] text-sm custom-scrollbar">
+                {JSON.stringify(currentSchema, null, 2)}
+              </pre>
+            </CardContent>
           </div>
 
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle>Rendered UI Output</CardTitle>
-                <CardDescription>
-                  Same schema, different framework styling
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <UIFactory key={`${selectedAdapter}-${selectedDemo}`} schema={schemaWithAdapter} />
-              </CardContent>
-            </Card>
+          <div className="bg-slate-800/50 rounded-2xl shadow-2xl backdrop-blur-lg border border-slate-700/50 transition-all duration-300 hover:border-slate-600 hover:shadow-green-500/10">
+            <CardHeader className="border-b border-slate-700/50">
+              <CardTitle className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-teal-400">
+                Rendered Output
+              </CardTitle>
+              <CardDescription className="text-slate-400">
+                Experience the schema in action.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="bg-white rounded-lg p-6 min-h-[60vh]">
+                {selectedAdapter === 'chakra-ui' ? (
+                  <ChakraProvider>
+                    <UIFactory
+                      key={`${selectedAdapter}-${selectedDemo}`}
+                      schema={schemaWithAdapter}
+                    />
+                  </ChakraProvider>
+                ) : (
+                  <UIFactory
+                    key={`${selectedAdapter}-${selectedDemo}`}
+                    schema={schemaWithAdapter}
+                  />
+                )}
+              </div>
+            </CardContent>
           </div>
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Alert>
-            <CheckCircle2 className="h-4 w-4" />
-            <AlertDescription>
-              <strong>4 UI Framework Adapters:</strong> ShadCN, Material-UI, Chakra UI, Ant Design
-            </AlertDescription>
-          </Alert>
-          <Alert>
-            <Package className="h-4 w-4" />
-            <AlertDescription>
-              <strong>Adapter Pattern:</strong> Pluggable architecture for unlimited framework support
-            </AlertDescription>
-          </Alert>
         </div>
       </div>
     </div>
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root')!)
+const root = ReactDOM.createRoot(document.getElementById('root')!);
 
 root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
-)
+);

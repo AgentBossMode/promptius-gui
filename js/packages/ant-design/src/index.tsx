@@ -1,83 +1,102 @@
 import React from 'react';
-import { AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Button, Input, Typography, Card, Alert, Row, Col, Space, Form } from 'antd';
 import { AdapterRegistry } from '@dgui/adapters';
+
+const { Text, Title, Paragraph } = Typography;
 
 export const antDesignAdapter: AdapterRegistry['ant-design'] = {
   button: {
     render: (component, children) => {
-      const variantMap: Record<string, string> = {
-        default: 'bg-blue-500 hover:bg-blue-600 text-white border-blue-500',
-        outline: 'bg-white border-2 border-blue-500 text-blue-500 hover:text-blue-600 hover:border-blue-600',
-        destructive: 'bg-red-500 hover:bg-red-600 text-white border-red-500',
+      const variantMap: Record<string, any> = {
+        default: { type: 'primary' },
+        outline: { type: 'default' },
+        destructive: { type: 'primary', danger: true },
       };
+      
+      const variantProps = variantMap[component.props?.variant || 'default'] || {};
+      
       return (
-        <button
+        <Button
+          {...variantProps}
           disabled={component.props?.disabled}
-          className={`px-4 py-1.5 rounded border transition-colors font-normal ${
-            variantMap[component.props?.variant || 'default']
-          } ${component.props?.className || ''} disabled:opacity-50 disabled:cursor-not-allowed`}
+          className={component.props?.className}
         >
           {component.props?.label || children}
-        </button>
+        </Button>
       );
     },
   },
+  
   input: {
     render: (component) => (
-      <input
+      <Input
         type={component.props?.type || 'text'}
         placeholder={component.props?.placeholder}
         value={component.props?.value}
         disabled={component.props?.disabled}
-        className={`w-full px-3 py-1.5 border border-gray-300 rounded hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all ${
-          component.props?.className || ''
-        }`}
+        className={component.props?.className}
       />
     ),
   },
+  
   text: {
     render: (component, children) => {
-      const Tag = component.props?.tag || 'p';
-      return React.createElement(
-        Tag,
-        { className: `${component.props?.className || ''} text-gray-800` },
-        component.props?.content || children
-      );
+      const content = component.props?.content || children;
+      const className = component.props?.className;
+      
+      // Map common tags to Ant Design Typography components
+      const tagMap: Record<string, any> = {
+        h1: () => <Title level={1} className={className}>{content}</Title>,
+        h2: () => <Title level={2} className={className}>{content}</Title>,
+        h3: () => <Title level={3} className={className}>{content}</Title>,
+        h4: () => <Title level={4} className={className}>{content}</Title>,
+        h5: () => <Title level={5} className={className}>{content}</Title>,
+        p: () => <Paragraph className={className}>{content}</Paragraph>,
+        span: () => <Text className={className}>{content}</Text>,
+      };
+      
+      const tag = component.props?.tag || 'p';
+      const Component = tagMap[tag];
+      
+      return Component ? Component() : <Text className={className}>{content}</Text>;
     },
   },
+  
   card: {
     render: (component, children) => (
-      <div className={`bg-white rounded-sm border border-gray-200 overflow-hidden ${component.props?.className || ''}`}>
-        {component.props?.title && (
-          <div className="px-6 py-4 border-b border-gray-200 bg-white">
-            <h3 className="text-base font-semibold text-gray-900">{component.props?.title}</h3>
-            {component.props?.description && (
-              <p className="text-sm text-gray-500 mt-1">{component.props?.description}</p>
-            )}
-          </div>
+      <Card
+        title={component.props?.title}
+        className={component.props?.className}
+        extra={component.props?.extra}
+      >
+        {component.props?.description && (
+          <Text type="secondary" style={{ display: 'block', marginBottom: 16 }}>
+            {component.props?.description}
+          </Text>
         )}
-        <div className="px-6 py-4">{children}</div>
-      </div>
+        {children}
+      </Card>
     ),
   },
+  
   alert: {
     render: (component, children) => {
-      const styleMap: Record<string, string> = {
-        default: 'bg-blue-50 border-blue-200 text-blue-800',
-        destructive: 'bg-red-50 border-red-200 text-red-800',
+      const variantMap: Record<string, any> = {
+        default: 'info',
+        destructive: 'error',
       };
+      
       return (
-        <div className={`p-3 rounded-sm border flex items-start gap-2 ${styleMap[component.props?.variant || 'default']}`}>
-          {component.props?.variant === 'destructive' ? (
-            <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-          ) : (
-            <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
-          )}
-          <p className="text-sm">{component.props?.message || children}</p>
-        </div>
+        <Alert
+          message={component.props?.message || children}
+          type={variantMap[component.props?.variant || 'default']}
+          showIcon
+          className={component.props?.className}
+        />
       );
     },
   },
+  
   container: {
     render: (component, children) => (
       <div className={component.props?.className} style={component.props?.style}>
@@ -85,37 +104,54 @@ export const antDesignAdapter: AdapterRegistry['ant-design'] = {
       </div>
     ),
   },
+  
   formContainer: {
     render: (component, children) => (
-      <div className={component.props?.className}>{children}</div>
+      <Form
+        layout={component.props?.layout || 'vertical'}
+        className={component.props?.className}
+      >
+        {children}
+      </Form>
     ),
   },
+  
   grid: {
-    render: (component, children) => (
-      <div
-        className="grid"
-        style={{
-          gridTemplateColumns: `repeat(${component.layout?.columns || 1}, 1fr)`,
-          gap: `${component.layout?.gap || 4}px`,
-          ...component.props?.style,
-        }}
-      >
-        {children}
-      </div>
-    ),
+    render: (component, children) => {
+      const columns = component.layout?.columns || 1;
+      const gap = component.layout?.gap || 16;
+      const span = 24 / columns;
+      
+      // Wrap children in Col components
+      const childrenArray = React.Children.toArray(children);
+      
+      return (
+        <Row gutter={gap} className={component.props?.className} style={component.props?.style}>
+          {childrenArray.map((child, index) => (
+            <Col key={index} span={span}>
+              {child}
+            </Col>
+          ))}
+        </Row>
+      );
+    },
   },
+  
   stack: {
-    render: (component, children) => (
-      <div
-        className="flex"
-        style={{
-          flexDirection: component.layout?.direction || 'column',
-          gap: `${component.layout?.gap || 8}px`,
-          ...component.props?.style,
-        }}
-      >
-        {children}
-      </div>
-    ),
+    render: (component, children) => {
+      const direction = component.layout?.direction || 'vertical';
+      const gap = component.layout?.gap || 8;
+      
+      return (
+        <Space
+          direction={direction === 'column' ? 'vertical' : 'horizontal'}
+          size={gap}
+          className={component.props?.className}
+          style={{ display: 'flex', ...component.props?.style }}
+        >
+          {children}
+        </Space>
+      );
+    },
   },
 };
