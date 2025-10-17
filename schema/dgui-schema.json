@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/kanishkgupta2000/DGUI/schema/dgui-schema.json",
+  "$id": "https://github.com/AgentBossMode/DGUI/schema/dgui-schema.json",
   "title": "DGUI Schema",
   "description": "Type-safe UI schema definitions for cross-platform UI generation",
   "version": "1.0.0",

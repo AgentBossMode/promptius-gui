@@ -30,7 +30,7 @@ git push origin v1.2.3
 
 ### 3. Monitor the Release
 
-1. Go to the [Actions tab](https://github.com/kanishkgupta2000/DGUI/actions) in GitHub
+1. Go to the [Actions tab](https://github.com/AgentBossMode/DGUI/actions) in GitHub
 2. Look for the "Publish Packages" workflow triggered by your tag
 3. Verify both Python and JavaScript publishing jobs complete successfully
 

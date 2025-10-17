@@ -37,10 +37,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/kanishkgupta2000/DGUI"
-Repository = "https://github.com/kanishkgupta2000/DGUI"
-Documentation = "https://github.com/kanishkgupta2000/DGUI#readme"
-"Bug Tracker" = "https://github.com/kanishkgupta2000/DGUI/issues"
+Homepage = "https://github.com/AgentBossMode/DGUI"
+Repository = "https://github.com/AgentBossMode/DGUI"
+Documentation = "https://github.com/AgentBossMode/DGUI#readme"
+"Bug Tracker" = "https://github.com/AgentBossMode/DGUI/issues"
 
 [project.optional-dependencies]
 dev = [

@@ -211,7 +211,7 @@ except ValidationError as e:
 ### Installation for Development
 
 ```bash
-git clone https://github.com/kanishkgupta2000/DGUI.git
+git clone https://github.com/AgentBossMode/DGUI.git
 cd DGUI/python
 pip install -e .
 ```
@@ -252,7 +252,7 @@ isort dgui_schema/
 
 ## Contributing
 
-Contributions are welcome! Please read our [Contributing Guide](https://github.com/kanishkgupta2000/DGUI/blob/main/CONTRIBUTING.md) for details.
+Contributions are welcome! Please read our [Contributing Guide](https://github.com/AgentBossMode/DGUI/blob/main/CONTRIBUTING.md) for details.
 
 ## License
 
@@ -260,12 +260,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Related Projects
 
-- [DGUI Core](https://github.com/kanishkgupta2000/DGUI) - Main DGUI repository
-- [DGUI React](https://github.com/kanishkgupta2000/DGUI/tree/main/js/packages/core) - React renderer
-- [DGUI Vue](https://github.com/kanishkgupta2000/DGUI) - Vue renderer (coming soon)
+- [DGUI Core](https://github.com/AgentBossMode/DGUI) - Main DGUI repository
+- [DGUI React](https://github.com/AgentBossMode/DGUI/tree/main/js/packages/core) - React renderer
+- [DGUI Vue](https://github.com/AgentBossMode/DGUI) - Vue renderer (coming soon)
 
 ## Support
 
-- 📖 [Documentation](https://github.com/kanishkgupta2000/DGUI#readme)
-- 🐛 [Issue Tracker](https://github.com/kanishkgupta2000/DGUI/issues)
-- 💬 [Discussions](https://github.com/kanishkgupta2000/DGUI/discussions)
+- 📖 [Documentation](https://github.com/AgentBossMode/DGUI#readme)
+- 🐛 [Issue Tracker](https://github.com/AgentBossMode/DGUI/issues)
+- 💬 [Discussions](https://github.com/AgentBossMode/DGUI/discussions)

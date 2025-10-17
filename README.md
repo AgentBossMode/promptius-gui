@@ -1,5 +1,7 @@
 # DGUI - Dynamic UI Factory
 
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/AgentBossMode/DGUI)
+
 This project is a JSON-driven React UI factory that can dynamically render UIs based on a JSON schema. It supports multiple UI frameworks like Material UI, Chakra UI, and Ant Design.
 
 ## Architecture

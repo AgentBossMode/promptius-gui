@@ -1,5 +1,7 @@
 # DGUI Schema System
 
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/AgentBossMode/DGUI)
+
 This directory contains the JSON Schema-based code generation system for DGUI. The system uses a single JSON Schema definition as the source of truth to generate type-safe code for multiple programming languages.
 
 ## Overview

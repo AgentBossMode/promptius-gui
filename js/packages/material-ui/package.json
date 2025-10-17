@@ -5,6 +5,10 @@
   "keywords": ["react", "ui", "material-ui", "mui", "adapter", "components"],
   "author": "Kanishk Gupta <kanishkgupta2000@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AgentBossMode/DGUI.git"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
