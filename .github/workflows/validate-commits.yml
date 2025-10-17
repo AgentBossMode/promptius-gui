@@ -1,0 +1,59 @@
+name: Validate Conventional Commits
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate-commits:
+    name: Validate Commit Messages
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate conventional commits
+        uses: amannn/action-conventional-commits@v5
+        with:
+          validateBranches: false
+          validateMergeCommits: false
+          allowedTypes: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          disallowTypes: |
+            wip
+          requireScope: false
+          maxSubjectLength: 100
+          minSubjectLength: 10
+          subjectPattern: ^[a-z].*[^.]$
+          subjectPatternError: |
+            The subject "{subject}" found in commit {commit} didn't match the configured pattern. Please ensure that the subject is lowercased and doesn't end with a period.
+          helpMessage: |
+            Please use conventional commits format for your commit messages.
+            
+            Examples:
+            - feat: add new feature
+            - fix: resolve bug in component
+            - docs: update README
+            - style: format code
+            - refactor: restructure component
+            - perf: improve performance
+            - test: add unit tests
+            - build: update dependencies
+            - ci: update workflow
+            - chore: maintenance tasks
+            - revert: undo previous commit
+            
+            More info: https://www.conventionalcommits.org/

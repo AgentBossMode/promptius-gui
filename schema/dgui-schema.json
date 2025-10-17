@@ -1,0 +1,917 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kanishkgupta2000/DGUI/schema/dgui-schema.json",
+  "title": "DGUI Schema",
+  "description": "Type-safe UI schema definitions for cross-platform UI generation",
+  "version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "$ref": "#/$defs/UIMetadata"
+    },
+    "root": {
+      "$ref": "#/$defs/UIComponent"
+    }
+  },
+  "required": ["metadata", "root"],
+  "additionalProperties": false,
+  "$defs": {
+    "ButtonVariant": {
+      "type": "string",
+      "enum": ["primary", "secondary", "outline", "ghost", "destructive"],
+      "description": "Button visual variant"
+    },
+    "ButtonSize": {
+      "type": "string",
+      "enum": ["sm", "md", "lg"],
+      "description": "Button size variant"
+    },
+    "InputType": {
+      "type": "string",
+      "enum": ["text", "email", "password", "number", "tel", "url", "search", "date"],
+      "description": "HTML input type"
+    },
+    "InputSize": {
+      "type": "string",
+      "enum": ["sm", "md", "lg"],
+      "description": "Input size variant"
+    },
+    "AlertVariant": {
+      "type": "string",
+      "enum": ["info", "success", "warning", "error"],
+      "description": "Alert visual variant"
+    },
+    "TextTag": {
+      "type": "string",
+      "enum": ["h1", "h2", "h3", "h4", "h5", "h6", "p", "span", "label"],
+      "description": "HTML tag for text component"
+    },
+    "AlignText": {
+      "type": "string",
+      "enum": ["left", "center", "right", "justify"],
+      "description": "Text alignment"
+    },
+    "FlexDirection": {
+      "type": "string",
+      "enum": ["row", "column"],
+      "description": "Flexbox direction"
+    },
+    "ChartType": {
+      "type": "string",
+      "enum": ["bar", "line", "pie"],
+      "description": "Chart visualization type"
+    },
+    "EventType": {
+      "type": "string",
+      "enum": ["onClick", "onSubmit", "onChange", "onFocus", "onBlur"],
+      "description": "Event handler type"
+    },
+    "NavigateAction": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "navigate"
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "description": "URL or route to navigate to"
+        },
+        "target": {
+          "type": "string",
+          "enum": ["_self", "_blank"],
+          "default": "_self"
+        }
+      },
+      "required": ["type", "url"],
+      "additionalProperties": false,
+      "description": "Navigate to a URL or route"
+    },
+    "SetStateAction": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "setState"
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "description": "State key to update"
+        },
+        "value": {
+          "oneOf": [
+            {"type": "string"},
+            {"type": "number"},
+            {"type": "boolean"}
+          ],
+          "description": "Value to set"
+        }
+      },
+      "required": ["type", "key", "value"],
+      "additionalProperties": false,
+      "description": "Update component state"
+    },
+    "SubmitFormAction": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "submitForm"
+        },
+        "endpoint": {
+          "type": "string",
+          "description": "API endpoint to submit to"
+        },
+        "method": {
+          "type": "string",
+          "enum": ["POST", "PUT", "PATCH"],
+          "default": "POST"
+        }
+      },
+      "required": ["type"],
+      "additionalProperties": false,
+      "description": "Submit form data"
+    },
+    "ValidateAction": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "validate"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Validation rules"
+        }
+      },
+      "required": ["type"],
+      "additionalProperties": false,
+      "description": "Validate form or input"
+    },
+    "CustomAction": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "custom"
+        },
+        "handler": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of custom handler function"
+        }
+      },
+      "required": ["type", "handler"],
+      "additionalProperties": false,
+      "description": "Custom handler reference"
+    },
+    "EventAction": {
+      "oneOf": [
+        {"$ref": "#/$defs/NavigateAction"},
+        {"$ref": "#/$defs/SetStateAction"},
+        {"$ref": "#/$defs/SubmitFormAction"},
+        {"$ref": "#/$defs/ValidateAction"},
+        {"$ref": "#/$defs/CustomAction"}
+      ],
+      "discriminator": {
+        "propertyName": "type"
+      }
+    },
+    "EventBinding": {
+      "type": "object",
+      "properties": {
+        "event": {
+          "$ref": "#/$defs/EventType"
+        },
+        "action": {
+          "$ref": "#/$defs/EventAction"
+        }
+      },
+      "required": ["event", "action"],
+      "additionalProperties": false,
+      "description": "Binds a UI event to a specific action"
+    },
+    "ButtonProps": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Button text"
+        },
+        "variant": {
+          "$ref": "#/$defs/ButtonVariant",
+          "default": "primary"
+        },
+        "size": {
+          "$ref": "#/$defs/ButtonSize",
+          "default": "md"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "fullWidth": {
+          "type": "boolean",
+          "default": false
+        },
+        "loading": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": ["label"],
+      "additionalProperties": false,
+      "description": "Type-safe props for Button component"
+    },
+    "InputProps": {
+      "type": "object",
+      "properties": {
+        "placeholder": {
+          "type": "string",
+          "default": "",
+          "description": "Placeholder text"
+        },
+        "type": {
+          "$ref": "#/$defs/InputType",
+          "default": "text"
+        },
+        "size": {
+          "$ref": "#/$defs/InputSize",
+          "default": "md"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string",
+          "description": "Input label"
+        },
+        "helperText": {
+          "type": "string",
+          "description": "Helper text below input"
+        },
+        "defaultValue": {
+          "type": "string",
+          "description": "Default input value"
+        },
+        "maxLength": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum input length"
+        },
+        "minLength": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Minimum input length"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Type-safe props for Input component"
+    },
+    "TextareaProps": {
+      "type": "object",
+      "properties": {
+        "placeholder": {
+          "type": "string",
+          "default": "",
+          "description": "Placeholder text"
+        },
+        "rows": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20,
+          "default": 4,
+          "description": "Number of textarea rows"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
+        },
+        "label": {
+          "type": "string",
+          "description": "Textarea label"
+        },
+        "helperText": {
+          "type": "string",
+          "description": "Helper text below textarea"
+        },
+        "maxLength": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum textarea length"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Type-safe props for Textarea component"
+    },
+    "TextProps": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Text content"
+        },
+        "tag": {
+          "$ref": "#/$defs/TextTag",
+          "default": "p"
+        },
+        "align": {
+          "$ref": "#/$defs/AlignText",
+          "default": "left"
+        },
+        "bold": {
+          "type": "boolean",
+          "default": false
+        },
+        "italic": {
+          "type": "boolean",
+          "default": false
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^(#[0-9A-Fa-f]{6}|[a-z\\-]+)$",
+          "description": "Text color (hex or CSS color name)"
+        }
+      },
+      "required": ["content"],
+      "additionalProperties": false,
+      "description": "Type-safe props for Text component"
+    },
+    "CardProps": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Card title"
+        },
+        "description": {
+          "type": "string",
+          "description": "Card description"
+        },
+        "elevation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5,
+          "default": 1,
+          "description": "Card elevation level"
+        },
+        "padding": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64,
+          "default": 16,
+          "description": "Card padding in pixels"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Type-safe props for Card component"
+    },
+    "AlertProps": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Alert message"
+        },
+        "title": {
+          "type": "string",
+          "description": "Alert title"
+        },
+        "variant": {
+          "$ref": "#/$defs/AlertVariant",
+          "default": "info"
+        },
+        "dismissible": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": ["message"],
+      "additionalProperties": false,
+      "description": "Type-safe props for Alert component"
+    },
+    "ContainerProps": {
+      "type": "object",
+      "properties": {
+        "maxWidth": {
+          "type": "integer",
+          "minimum": 320,
+          "maximum": 1920,
+          "description": "Maximum container width in pixels"
+        },
+        "padding": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64,
+          "default": 16,
+          "description": "Container padding in pixels"
+        },
+        "centered": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "description": "Type-safe props for Container component"
+    },
+    "GridProps": {
+      "type": "object",
+      "properties": {
+        "columns": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12,
+          "default": 1,
+          "description": "Number of columns"
+        },
+        "gap": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64,
+          "default": 16,
+          "description": "Gap between items in pixels"
+        },
+        "responsive": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable responsive behavior"
+        }
+      },
+      "required": ["columns"],
+      "additionalProperties": false,
+      "description": "Type-safe props for Grid layout"
+    },
+    "StackProps": {
+      "type": "object",
+      "properties": {
+        "direction": {
+          "$ref": "#/$defs/FlexDirection",
+          "default": "column"
+        },
+        "gap": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64,
+          "default": 8,
+          "description": "Gap between items in pixels"
+        },
+        "align": {
+          "type": "string",
+          "enum": ["start", "center", "end", "stretch"],
+          "default": "stretch",
+          "description": "Alignment of items"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Type-safe props for Stack layout"
+    },
+    "ChartSeries": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Series name"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 1,
+          "description": "Series data points"
+        }
+      },
+      "required": ["data"],
+      "additionalProperties": false,
+      "description": "Chart data series"
+    },
+    "AxisXProps": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "X-axis label"
+        },
+        "ticks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "X-axis tick labels"
+        },
+        "showGrid": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "description": "X-axis configuration"
+    },
+    "AxisYProps": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Y-axis label"
+        },
+        "min": {
+          "type": "number",
+          "description": "Y-axis minimum value"
+        },
+        "max": {
+          "type": "number",
+          "description": "Y-axis maximum value"
+        },
+        "showGrid": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "description": "Y-axis configuration"
+    },
+    "ChartAnnotation": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number",
+          "description": "X coordinate"
+        },
+        "y": {
+          "type": "number",
+          "description": "Y coordinate"
+        },
+        "label": {
+          "type": "string",
+          "description": "Annotation label"
+        }
+      },
+      "required": ["label"],
+      "additionalProperties": false,
+      "description": "Chart annotation"
+    },
+    "ChartProps": {
+      "type": "object",
+      "properties": {
+        "chartType": {
+          "$ref": "#/$defs/ChartType",
+          "description": "Chart visualization type"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 4000,
+          "description": "Chart width in pixels"
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 4000,
+          "description": "Chart height in pixels"
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Chart category labels"
+        },
+        "series": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ChartSeries"
+          },
+          "minItems": 1,
+          "description": "Chart data series"
+        },
+        "colors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Custom chart colors"
+        },
+        "title": {
+          "type": "string",
+          "description": "Chart title"
+        },
+        "showLegend": {
+          "type": "boolean",
+          "default": true
+        },
+        "legendPosition": {
+          "type": "string",
+          "enum": ["top", "right", "bottom", "left"],
+          "default": "top"
+        },
+        "xAxis": {
+          "$ref": "#/$defs/AxisXProps"
+        },
+        "yAxis": {
+          "$ref": "#/$defs/AxisYProps"
+        },
+        "annotations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ChartAnnotation"
+          },
+          "description": "Chart annotations"
+        }
+      },
+      "required": ["chartType", "series"],
+      "additionalProperties": false,
+      "description": "Type-safe props for Chart component"
+    },
+    "ButtonComponent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "button"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "props": {
+          "$ref": "#/$defs/ButtonProps"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EventBinding"
+          },
+          "description": "Event handlers"
+        }
+      },
+      "required": ["type", "id", "props"],
+      "additionalProperties": false,
+      "description": "Button component with type-safe props"
+    },
+    "InputComponent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "input"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "props": {
+          "$ref": "#/$defs/InputProps"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EventBinding"
+          },
+          "description": "Event handlers"
+        }
+      },
+      "required": ["type", "id", "props"],
+      "additionalProperties": false,
+      "description": "Input component with type-safe props"
+    },
+    "TextareaComponent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "textarea"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "props": {
+          "$ref": "#/$defs/TextareaProps"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EventBinding"
+          },
+          "description": "Event handlers"
+        }
+      },
+      "required": ["type", "id", "props"],
+      "additionalProperties": false,
+      "description": "Textarea component with type-safe props"
+    },
+    "TextComponent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "text"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "props": {
+          "$ref": "#/$defs/TextProps"
+        }
+      },
+      "required": ["type", "id", "props"],
+      "additionalProperties": false,
+      "description": "Text component with type-safe props"
+    },
+    "CardComponent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "card"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "props": {
+          "$ref": "#/$defs/CardProps"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/UIComponent"
+          },
+          "default": [],
+          "description": "Child components"
+        }
+      },
+      "required": ["type", "id", "props"],
+      "additionalProperties": false,
+      "description": "Card component with type-safe props"
+    },
+    "AlertComponent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "alert"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "props": {
+          "$ref": "#/$defs/AlertProps"
+        }
+      },
+      "required": ["type", "id", "props"],
+      "additionalProperties": false,
+      "description": "Alert component with type-safe props"
+    },
+    "ContainerComponent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "container"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "props": {
+          "$ref": "#/$defs/ContainerProps"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/UIComponent"
+          },
+          "default": [],
+          "description": "Child components"
+        }
+      },
+      "required": ["type", "id", "props"],
+      "additionalProperties": false,
+      "description": "Container component with type-safe props"
+    },
+    "GridComponent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "grid"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "props": {
+          "$ref": "#/$defs/GridProps"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/UIComponent"
+          },
+          "default": [],
+          "description": "Child components"
+        }
+      },
+      "required": ["type", "id", "props"],
+      "additionalProperties": false,
+      "description": "Grid layout with type-safe props"
+    },
+    "StackComponent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "stack"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "props": {
+          "$ref": "#/$defs/StackProps"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/UIComponent"
+          },
+          "default": [],
+          "description": "Child components"
+        }
+      },
+      "required": ["type", "id", "props"],
+      "additionalProperties": false,
+      "description": "Stack layout with type-safe props"
+    },
+    "ChartComponent": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "chart"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "props": {
+          "$ref": "#/$defs/ChartProps"
+        }
+      },
+      "required": ["type", "id", "props"],
+      "additionalProperties": false,
+      "description": "Chart component with type-safe props"
+    },
+    "UIComponent": {
+      "oneOf": [
+        {"$ref": "#/$defs/ButtonComponent"},
+        {"$ref": "#/$defs/InputComponent"},
+        {"$ref": "#/$defs/TextareaComponent"},
+        {"$ref": "#/$defs/TextComponent"},
+        {"$ref": "#/$defs/CardComponent"},
+        {"$ref": "#/$defs/AlertComponent"},
+        {"$ref": "#/$defs/ContainerComponent"},
+        {"$ref": "#/$defs/GridComponent"},
+        {"$ref": "#/$defs/StackComponent"},
+        {"$ref": "#/$defs/ChartComponent"}
+      ],
+      "discriminator": {
+        "propertyName": "type"
+      }
+    },
+    "UIMetadata": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "UI schema title"
+        },
+        "description": {
+          "type": "string",
+          "description": "UI schema description"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "default": "1.0.0",
+          "description": "Schema version"
+        },
+        "framework": {
+          "type": "string",
+          "enum": ["shadcn", "material-ui", "chakra-ui", "ant-design"],
+          "default": "shadcn",
+          "description": "Target UI framework"
+        }
+      },
+      "required": ["title"],
+      "additionalProperties": false,
+      "description": "Metadata for the UI schema"
+    }
+  }
+}

@@ -1,0 +1,93 @@
+name: Publish Packages
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish-python:
+    name: Publish Python Package
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION"
+
+      - name: Bump package versions
+        run: |
+          chmod +x scripts/bump-version.sh
+          ./scripts/bump-version.sh ${{ steps.version.outputs.version }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          cd python
+          pip install build twine
+
+      - name: Build Python package
+        run: |
+          cd python
+          python -m build
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          cd python
+          python -m twine upload dist/*
+
+  publish-js:
+    name: Publish JavaScript Packages
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION"
+
+      - name: Bump package versions
+        run: |
+          chmod +x scripts/bump-version.sh
+          ./scripts/bump-version.sh ${{ steps.version.outputs.version }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: |
+          cd js
+          npm ci
+
+      - name: Build packages
+        run: |
+          cd js
+          npm run build
+
+      - name: Publish packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd js
+          npm publish --workspaces --access public

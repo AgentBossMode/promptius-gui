@@ -4,7 +4,8 @@ from pydantic import BaseModel
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage
 from dotenv import load_dotenv
-from main import UISchema
+
+from dgui_schema import UISchema
 import uvicorn
 
 load_dotenv()

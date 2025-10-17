@@ -14,6 +14,9 @@
     "packages/*"
   ],
   "scripts": {
+    "generate": "../scripts/generate-all.sh",
+    "generate:watch": "nodemon --watch ../schema/dgui-schema.json --exec \"../scripts/generate-all.sh\"",
+    "prebuild": "npm run generate",
     "build": "npm run build -ws",
     "dev": "npm run build && vite"
   },
@@ -21,13 +24,17 @@
     "@types/react": "^18.0.0",
     "@vitejs/plugin-react": "^5.0.4",
     "autoprefixer": "^10.4.21",
+    "json-schema-to-typescript": "^14.1.0",
+    "json-schema-to-zod": "^1.0.0",
     "lucide-react": "^0.546.0",
+    "nodemon": "^3.0.0",
     "postcss": "^8.5.6",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tailwindcss": "^4.1.14",
     "typescript": "^4.5.0",
-    "vite": "^7.1.10"
+    "vite": "^7.1.10",
+    "zod": "^3.22.0"
   },
   "overrides": {
     "react": "18.3.1",
