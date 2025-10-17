@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from langchain_openai import ChatOpenAI
-from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import SystemMessage, HumanMessage
 from dotenv import load_dotenv
 from main import UISchema
@@ -27,6 +26,10 @@ llm_with_struct = llm.with_structured_output(UISchema)
 
 class GenerateUIRequest(BaseModel):
     prompt: str
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
 
 @app.post("/generate_ui")
 def generate_ui(request: GenerateUIRequest):

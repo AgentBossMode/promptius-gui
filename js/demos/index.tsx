@@ -1,5 +1,5 @@
 import '../src/index.css';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { Button } from '../src/components/ui/button';
 import {
@@ -12,7 +12,53 @@ import {
 import { Input } from '../src/components/ui/input';
 import { UISchema } from '../packages/schemas';
 import UIFactory from '../packages/core/src/index';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import toast, { Toaster } from 'react-hot-toast';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { 
+  Code2, 
+  Eye, 
+  Copy, 
+  Download, 
+  Sparkles, 
+  LayoutDashboard, 
+  FileText, 
+  BarChart3,
+  Check,
+  Loader2,
+  Github,
+  Star,
+  GripVertical
+} from 'lucide-react';
+
+const materialUITheme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: { main: '#6366f1' },
+    secondary: { main: '#ec4899' },
+  },
+});
+
+// Custom Chakra theme that doesn't interfere with global styles
+const chakraTheme = extendTheme({
+  styles: {
+    global: {
+      // Reset only within the ChakraProvider scope
+      'html, body': {
+        fontFamily: 'inherit',
+        lineHeight: 'inherit',
+        color: 'inherit',
+        backgroundColor: 'transparent',
+      },
+    },
+  },
+  config: {
+    // Disable Chakra's CSS reset
+    cssVarPrefix: 'chakra',
+  },
+});
 
 const demoSchemas = {
   form: {
@@ -48,10 +94,7 @@ const demoSchemas = {
                     {
                       id: 'name-label',
                       type: 'text',
-                      props: {
-                        tag: 'label',
-                        content: 'Full Name',
-                      },
+                      props: { tag: 'label', content: 'Full Name' },
                     },
                     {
                       id: 'name-input',
@@ -68,18 +111,12 @@ const demoSchemas = {
                     {
                       id: 'email-label',
                       type: 'text',
-                      props: {
-                        tag: 'label',
-                        content: 'Email Address',
-                      },
+                      props: { tag: 'label', content: 'Email Address' },
                     },
                     {
                       id: 'email-input',
                       type: 'input',
-                      props: {
-                        type: 'email',
-                        placeholder: 'john@example.com',
-                      },
+                      props: { type: 'email', placeholder: 'john@example.com' },
                     },
                   ],
                 },
@@ -141,18 +178,12 @@ const demoSchemas = {
                 {
                   id: 'stat-1-value',
                   type: 'text',
-                  props: {
-                    tag: 'p',
-                    content: '12,345',
-                  },
+                  props: { tag: 'p', content: '12,345' },
                 },
                 {
                   id: 'stat-1-change',
                   type: 'text',
-                  props: {
-                    tag: 'p',
-                    content: '+12.5% from last month',
-                  },
+                  props: { tag: 'p', content: '+12.5% from last month' },
                 },
               ],
             },
@@ -164,18 +195,12 @@ const demoSchemas = {
                 {
                   id: 'stat-2-value',
                   type: 'text',
-                  props: {
-                    tag: 'p',
-                    content: '$98,765',
-                  },
+                  props: { tag: 'p', content: '$98,765' },
                 },
                 {
                   id: 'stat-2-change',
                   type: 'text',
-                  props: {
-                    tag: 'p',
-                    content: '+8.2% from last month',
-                  },
+                  props: { tag: 'p', content: '+8.2% from last month' },
                 },
               ],
             },
@@ -187,18 +212,12 @@ const demoSchemas = {
                 {
                   id: 'stat-3-value',
                   type: 'text',
-                  props: {
-                    tag: 'p',
-                    content: '432',
-                  },
+                  props: { tag: 'p', content: '432' },
                 },
                 {
                   id: 'stat-3-change',
                   type: 'text',
-                  props: {
-                    tag: 'p',
-                    content: '+18.7% from last hour',
-                  },
+                  props: { tag: 'p', content: '+18.7% from last hour' },
                 },
               ],
             },
@@ -214,8 +233,7 @@ const demoSchemas = {
               type: 'alert',
               props: {
                 variant: 'info',
-                message:
-                  'System is operating normally. All services are up and running.',
+                message: 'System is operating normally. All services are up and running.',
               },
             },
           ],
@@ -260,9 +278,6 @@ const demoSchemas = {
                     ],
                     title: 'Monthly Performance',
                     showLegend: true,
-                    xAxis: { label: 'Month', ticks: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], showGrid: true },
-                    yAxis: { label: 'Units', min: 0, max: 20, showGrid: true },
-                    annotations: [{ x: 1, y: 19, label: 'Peak' }],
                   },
                 },
               ],
@@ -282,34 +297,8 @@ const demoSchemas = {
                     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                     series: [
                       { name: 'Visitors', data: [120, 132, 101, 134, 90, 230, 210] },
-                      { name: 'Signups', data: [30, 42, 35, 50, 39, 70, 65] },
                     ],
                     title: 'Traffic Trend',
-                    showLegend: true,
-                    xAxis: { label: 'Day', ticks: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], showGrid: true },
-                    yAxis: { label: 'Count', min: 0, showGrid: true },
-                    annotations: [{ x: 5, y: 230, label: 'Campaign' }],
-                  },
-                },
-              ],
-            },
-            {
-              id: 'pie-card',
-              type: 'card',
-              props: { title: 'Pie Chart' },
-              children: [
-                {
-                  id: 'pie-chart',
-                  type: 'chart',
-                  props: {
-                    chartType: 'pie',
-                    width: 440,
-                    height: 220,
-                    labels: ['Product A', 'Product B', 'Product C', 'Product D'],
-                    series: [
-                      { name: 'Share', data: [35, 25, 20, 20] },
-                    ],
-                    title: 'Market Share',
                     showLegend: true,
                   },
                 },
@@ -324,195 +313,371 @@ const demoSchemas = {
 
 function App() {
   const [selectedAdapter, setSelectedAdapter] = useState<string>('material-ui');
-  const [selectedDemo, setSelectedDemo] = useState<'form' | 'dashboard' | 'charts' | 'dynamic'>(
-    'form'
-  );
+  const [selectedDemo, setSelectedDemo] = useState<'form' | 'dashboard' | 'charts' | 'dynamic'>('form');
   const [dynamicSchema, setDynamicSchema] = useState<UISchema | null>(null);
   const [prompt, setPrompt] = useState<string>('');
+  const [serverReady, setServerReady] = useState<boolean>(false);
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string>('');
+  const [schemaWidth, setSchemaWidth] = useState<number>(50); // Percentage
+  const [isResizing, setIsResizing] = useState<boolean>(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    const ping = async () => {
+      try {
+        const res = await fetch('http://localhost:8000/health', { method: 'GET' });
+        if (isMounted) setServerReady(res.ok);
+      } catch {
+        if (isMounted) setServerReady(false);
+      }
+    };
+    ping();
+    const id = setInterval(ping, 30000);
+    return () => {
+      isMounted = false;
+      clearInterval(id);
+    };
+  }, []);
+
+  // Resize functionality
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isResizing) return;
+      
+      const container = document.querySelector('.resize-container');
+      if (!container) return;
+      
+      const rect = container.getBoundingClientRect();
+      const newWidth = ((e.clientX - rect.left) / rect.width) * 100;
+      const clampedWidth = Math.min(Math.max(newWidth, 20), 80); // Min 20%, Max 80%
+      setSchemaWidth(clampedWidth);
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    if (isResizing) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizing]);
 
   const adaptersInfo = [
-    {
-      id: 'material-ui',
-      name: 'Material UI',
-      color: 'bg-blue-600',
-      ring: 'ring-blue-500',
-    },
-    {
-      id: 'chakra-ui',
-      name: 'Chakra UI',
-      color: 'bg-teal-500',
-      ring: 'ring-teal-500',
-    },
-    {
-      id: 'ant-design',
-      name: 'Ant Design',
-      color: 'bg-rose-500',
-      ring: 'ring-rose-500',
-    },
+    { id: 'material-ui', name: 'Material UI', color: 'indigo' },
+    { id: 'chakra-ui', name: 'Chakra UI', color: 'teal' },
+    { id: 'ant-design', name: 'Ant Design', color: 'rose' },
+  ];
+
+  const demos = [
+    { id: 'form', label: 'Registration Form', icon: FileText },
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'charts', label: 'Charts', icon: BarChart3 },
+    { id: 'dynamic', label: 'AI Generated', icon: Sparkles, disabled: !dynamicSchema }
   ];
 
   const handleGenerateUI = async () => {
     if (!prompt) return;
     try {
+      setErrorMsg('');
+      setIsGenerating(true);
       const response = await fetch('http://localhost:8000/generate_ui', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
       });
+      if (!response.ok) throw new Error(`Server error: ${response.status}`);
       const data = await response.json();
-      console.log('Generated Schema:', data);
       setDynamicSchema(data);
       setSelectedDemo('dynamic');
+      toast.success('UI generated successfully!');
     } catch (error) {
-      console.error('Error generating UI:', error);
+      setErrorMsg('Server not reachable. Start the backend and try again.');
+      toast.error('Failed to generate UI');
+    } finally {
+      setIsGenerating(false);
     }
   };
 
   const currentSchema = selectedDemo === 'dynamic' && dynamicSchema ? dynamicSchema : demoSchemas[selectedDemo];
   const schemaWithAdapter = {
     ...currentSchema,
-    metadata: {
-      ...currentSchema.metadata,
-      framework: selectedAdapter,
-    },
+    metadata: { ...currentSchema.metadata, framework: selectedAdapter },
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto">
-        <header className="text-center mb-16">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-cyan-500">
-              Dynamic UI Factory
-            </span>
-          </h1>
-          <p className="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto">
-            One Schema, Multiple Frameworks. Instantly Rendered.
-          </p>
-        </header>
+  const currentSchemaString = useMemo(() => JSON.stringify(currentSchema, null, 2), [currentSchema]);
 
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-12">
-          <div className="flex flex-wrap justify-center gap-4 p-2 bg-slate-800/60 rounded-full shadow-lg">
-            {adaptersInfo.map((adapter) => (
-              <button
-                key={adapter.id}
-                onClick={() => setSelectedAdapter(adapter.id)}
-                className={`px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 ${
-                  selectedAdapter === adapter.id
-                    ? `${adapter.color} text-white shadow-lg transform scale-105 ${adapter.ring}`
-                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-                }`}
-              >
-                {adapter.name}
-              </button>
-            ))}
-          </div>
-          <div className="w-full sm:w-px h-px sm:h-10 bg-slate-700" />
-          <div className="flex justify-center gap-3 p-2 bg-slate-800/60 rounded-full shadow-lg">
-            <Button
-              variant={selectedDemo === 'form' ? 'secondary' : 'ghost'}
-              onClick={() => setSelectedDemo('form')}
-              className="text-white hover:bg-slate-700 rounded-full"
+  const handleCopyJSON = async () => {
+    try {
+      await navigator.clipboard.writeText(currentSchemaString);
+      toast.success('Schema copied!');
+    } catch {
+      toast.error('Failed to copy');
+    }
+  };
+
+  const handleDownloadJSON = () => {
+    try {
+      const blob = new Blob([currentSchemaString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${(currentSchema as any)?.metadata?.title?.replace(/\s+/g, '-').toLowerCase() || 'schema'}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success('Schema downloaded!');
+    } catch {
+      toast.error('Failed to download');
+    }
+  };
+
+  const currentAdapter = adaptersInfo.find(a => a.id === selectedAdapter);
+  const currentDemoInfo = demos.find(d => d.id === selectedDemo);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+      {/* Header */}
+      <header className="border-b border-slate-200 bg-white/80 backdrop-blur-xl sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+                <Code2 className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-slate-900">Dynamic UI Factory</h1>
+                <p className="text-xs text-slate-500">One schema, multiple frameworks</p>
+              </div>
+            </div>
+            <a 
+              href="https://github.com/" 
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition-colors"
             >
-              Form Example
-            </Button>
-            <Button
-              variant={selectedDemo === 'dashboard' ? 'secondary' : 'ghost'}
-              onClick={() => setSelectedDemo('dashboard')}
-              className="text-white hover:bg-slate-700 rounded-full"
-            >
-              Dashboard Example
-            </Button>
-            <Button
-              variant={selectedDemo === 'charts' ? 'secondary' : 'ghost'}
-              onClick={() => setSelectedDemo('charts')}
-              className="text-white hover:bg-slate-700 rounded-full"
-            >
-              Charts Example
-            </Button>
-             <Button
-              variant={selectedDemo === 'dynamic' ? 'secondary' : 'ghost'}
-              onClick={() => setSelectedDemo('dynamic')}
-              className="text-white hover:bg-slate-700 rounded-full"
-            >
-              Dynamic
-            </Button>
+              <Github className="h-4 w-4" />
+              <span className="hidden sm:inline">Star on GitHub</span>
+              <Star className="h-4 w-4" />
+            </a>
           </div>
         </div>
-        
-        <div className="mb-8">
-          <Card className="bg-slate-800/50 border-slate-700/50">
-            <CardHeader>
-              <CardTitle className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-                Generate UI from a Prompt
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex gap-4">
+      </header>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Control Bar */}
+        <div className="flex flex-col gap-6 mb-8">
+          {/* Framework Selector */}
+          <div>
+            <h3 className="text-sm font-medium text-slate-700 mb-3">Framework</h3>
+            <div className="flex flex-wrap gap-2">
+              {adaptersInfo.map((adapter) => (
+                <button
+                  key={adapter.id}
+                  onClick={() => setSelectedAdapter(adapter.id)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-lg border-2 transition-colors ${
+                    selectedAdapter === adapter.id
+                      ? `border-${adapter.color}-300 bg-${adapter.color}-50 text-${adapter.color}-700`
+                      : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                  }`}
+                >
+                  <span className="text-sm font-medium">{adapter.name}</span>
+                  {selectedAdapter === adapter.id && <Check className="h-4 w-4" />}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Demo Selector */}
+          <div>
+            <h3 className="text-sm font-medium text-slate-700 mb-3">Demo</h3>
+            <div className="flex flex-wrap gap-2">
+              {demos.map((demo) => {
+                const Icon = demo.icon;
+                return (
+                  <button
+                    key={demo.id}
+                    onClick={() => {
+                      if (!demo.disabled) {
+                        setSelectedDemo(demo.id as any);
+                      }
+                    }}
+                    disabled={demo.disabled}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-lg border-2 transition-colors ${
+                      demo.disabled
+                        ? 'opacity-50 cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400'
+                        : selectedDemo === demo.id
+                        ? 'border-indigo-300 bg-indigo-50 text-indigo-700'
+                        : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span className="text-sm font-medium">{demo.label}</span>
+                    {selectedDemo === demo.id && <Check className="h-4 w-4" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* AI Generation */}
+        <Card className="mb-8 border-2 border-indigo-100">
+          <CardHeader>
+            <div className="flex items-center gap-2 mb-1">
+              <Sparkles className="h-5 w-5 text-indigo-600" />
+              <CardTitle className="text-lg">Generate UI with AI</CardTitle>
+            </div>
+            <CardDescription>Describe your UI and watch it come to life</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-4 max-w-xl">
               <Input 
-                placeholder="e.g., A login form with email and password fields"
-                className="bg-slate-700 border-slate-600 text-white"
+                placeholder="A modern login form with email and password..."
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
+                className="flex-1"
               />
-              <Button onClick={handleGenerateUI}>Generate UI</Button>
+              <Button 
+                onClick={handleGenerateUI} 
+                disabled={!serverReady || isGenerating || !prompt}
+                className="bg-indigo-600 hover:bg-indigo-700 px-6 whitespace-nowrap"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Generating
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4 mr-2" />
+                    Generate
+                  </>
+                )}
+              </Button>
+            </div>
+            {errorMsg && (
+              <div className="mt-3 p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700">
+                {errorMsg}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Split View */}
+        <div className="resize-container flex flex-col md:flex-row gap-6" style={{ display: 'flex', flexDirection: 'row', gap: '24px' }}>
+          {/* Schema Panel */}
+          <Card 
+            className="border-2 flex flex-col h-[700px]" 
+            style={{ width: `${schemaWidth}%`, minWidth: '200px' }}
+          >
+            <CardHeader className="border-b bg-slate-50 flex-shrink-0">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Code2 className="h-5 w-5 text-slate-600" />
+                  <CardTitle className="text-lg">Schema</CardTitle>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={handleCopyJSON}>
+                    <Copy className="h-4 w-4 mr-2" />
+                    Copy
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={handleDownloadJSON}>
+                    <Download className="h-4 w-4 mr-2" />
+                    Save
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-0 flex-1 overflow-hidden">
+              <SyntaxHighlighter
+                language="json"
+                style={vscDarkPlus}
+                customStyle={{
+                  margin: 0,
+                  borderRadius: 0,
+                  fontSize: '0.875rem',
+                  height: '100%',
+                  overflow: 'auto',
+                }}
+                showLineNumbers
+              >
+                {currentSchemaString}
+              </SyntaxHighlighter>
+            </CardContent>
+          </Card>
+
+          {/* Resize Handle */}
+          <div 
+            className={`flex w-6 bg-slate-100 hover:bg-slate-200 cursor-col-resize transition-all duration-200 group ${
+              isResizing ? 'bg-indigo-200 hover:bg-indigo-300' : ''
+            }`}
+            onMouseDown={handleMouseDown}
+            style={{ minHeight: '700px' }}
+          >
+            <div className="w-full h-full flex items-center justify-center">
+              <div className="flex flex-col items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+                <GripVertical className="h-4 w-4 text-slate-500 group-hover:text-slate-700" />
+                <div className="flex flex-col gap-0.5">
+                  <div className="w-0.5 h-1 bg-slate-400 rounded-full"></div>
+                  <div className="w-0.5 h-1 bg-slate-400 rounded-full"></div>
+                  <div className="w-0.5 h-1 bg-slate-400 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Preview Panel */}
+          <Card 
+            className="border-2 flex flex-col h-[700px]" 
+            style={{ width: `${100 - schemaWidth}%`, minWidth: '200px' }}
+          >
+            <CardHeader className="border-b bg-slate-50 flex-shrink-0">
+              <div className="flex items-center gap-3">
+                <Eye className="h-5 w-5 text-slate-600" />
+                <CardTitle className="text-lg">Preview</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="p-4 flex-1 overflow-auto">
+              <div className="h-full rounded-lg bg-white border-2 border-dashed border-slate-200 p-4">
+                {selectedAdapter === 'chakra-ui' ? (
+                  <ChakraProvider theme={chakraTheme}>
+                    <UIFactory key={`${selectedAdapter}-${selectedDemo}`} schema={schemaWithAdapter} />
+                  </ChakraProvider>
+                ) : selectedAdapter === 'material-ui' ? (
+                  <ThemeProvider theme={materialUITheme}>
+                    <UIFactory key={`${selectedAdapter}-${selectedDemo}`} schema={schemaWithAdapter} />
+                  </ThemeProvider>
+                ) : (
+                  <UIFactory key={`${selectedAdapter}-${selectedDemo}`} schema={schemaWithAdapter} />
+                )}
+              </div>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          <div className="bg-slate-800/50 rounded-2xl shadow-2xl backdrop-blur-lg border border-slate-700/50 transition-all duration-300 hover:border-slate-600 hover:shadow-purple-500/10">
-            <CardHeader className="border-b border-slate-700/50">
-              <CardTitle className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500">
-                JSON Schema
-              </CardTitle>
-              <CardDescription className="text-slate-400">
-                The declarative heart of your UI.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
-              <pre className="bg-transparent text-slate-300 p-6 rounded-b-2xl overflow-auto max-h-[60vh] text-sm custom-scrollbar">
-                {JSON.stringify(currentSchema, null, 2)}
-              </pre>
-            </CardContent>
-          </div>
-
-          <div className="bg-slate-800/50 rounded-2xl shadow-2xl backdrop-blur-lg border border-slate-700/50 transition-all duration-300 hover:border-slate-600 hover:shadow-green-500/10">
-            <CardHeader className="border-b border-slate-700/50">
-              <CardTitle className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-teal-400">
-                Rendered Output
-              </CardTitle>
-              <CardDescription className="text-slate-400">
-                Experience the schema in action.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="bg-white rounded-lg p-6 min-h-[60vh]">
-                {selectedAdapter === 'chakra-ui' ? (
-                  <ChakraProvider>
-                    <UIFactory
-                      key={`${selectedAdapter}-${selectedDemo}`}
-                      schema={schemaWithAdapter}
-                    />
-                  </ChakraProvider>
-                ) : (
-                  <UIFactory
-                    key={`${selectedAdapter}-${selectedDemo}`}
-                    schema={schemaWithAdapter}
-                  />
-                )}
-              </div>
-            </CardContent>
-          </div>
-        </div>
+        {/* Footer */}
+        <footer className="mt-12 text-center text-sm text-slate-500">
+          <p>Built with Dynamic UI Factory • One schema, infinite possibilities</p>
+        </footer>
       </div>
+
+      <Toaster position="top-right" />
     </div>
   );
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
-
 root.render(
   <React.StrictMode>
     <App />
