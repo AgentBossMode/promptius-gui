@@ -1,8 +1,8 @@
 import React from 'react';
-import { UIComponent } from '@promptius-gui/schemas';
+import { Node } from '@promptius-gui/schemas';
 
 export interface ComponentAdapter {
-  render: (component: UIComponent, children?: React.ReactNode) => React.ReactNode;
+  render: (component: Node, children?: React.ReactNode) => React.ReactNode;
 }
 
 export interface AdapterRegistry {

@@ -16,11 +16,9 @@ jobs:
           fetch-depth: 0
 
       - name: Validate conventional commits
-        uses: amannn/action-conventional-commits@v5
+        uses: amannn/action-semantic-pull-request@v4
         with:
-          validateBranches: false
-          validateMergeCommits: false
-          allowedTypes: |
+          types: |
             feat
             fix
             docs
@@ -32,28 +30,9 @@ jobs:
             ci
             chore
             revert
-          disallowTypes: |
-            wip
           requireScope: false
-          maxSubjectLength: 100
-          minSubjectLength: 10
           subjectPattern: ^[a-z].*[^.]$
           subjectPatternError: |
-            The subject "{subject}" found in commit {commit} didn't match the configured pattern. Please ensure that the subject is lowercased and doesn't end with a period.
-          helpMessage: |
-            Please use conventional commits format for your commit messages.
-            
-            Examples:
-            - feat: add new feature
-            - fix: resolve bug in component
-            - docs: update README
-            - style: format code
-            - refactor: restructure component
-            - perf: improve performance
-            - test: add unit tests
-            - build: update dependencies
-            - ci: update workflow
-            - chore: maintenance tasks
-            - revert: undo previous commit
-            
-            More info: https://www.conventionalcommits.org/
+            The subject "{subject}" in the PR title "{title}" didn't match the configured pattern. Please ensure that the subject is lowercased and doesn't end with a period.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -2,18 +2,38 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/AgentBossMode/promptius-gui/schema/promptius-gui-schema.json",
   "title": "Promptius GUI Schema",
-  "description": "Type-safe UI schema definitions for cross-platform UI generation",
-  "version": "1.0.0",
+  "description": "Type-safe UI schema definitions for cross-platform UI generation using graph-based structure",
+  "version": "2.0.0",
   "type": "object",
   "properties": {
     "metadata": {
       "$ref": "#/$defs/UIMetadata"
     },
-    "root": {
-      "$ref": "#/$defs/UIComponent"
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Node"
+      },
+      "description": "Array of UI component nodes"
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Edge"
+      },
+      "default": [],
+      "description": "Array of parent-child relationships"
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Event"
+      },
+      "default": [],
+      "description": "Array of event bindings"
     }
   },
-  "required": ["metadata", "root"],
+  "required": ["metadata", "nodes"],
   "additionalProperties": false,
   "$defs": {
     "ButtonVariant": {
@@ -80,7 +100,8 @@
         "target": {
           "type": "string",
           "enum": ["_self", "_blank"],
-          "default": "_self"
+          "default": "_self",
+          "description": "Navigation target window"
         }
       },
       "required": ["type", "url"],
@@ -124,7 +145,8 @@
         "method": {
           "type": "string",
           "enum": ["POST", "PUT", "PATCH"],
-          "default": "POST"
+          "default": "POST",
+          "description": "HTTP method for form submission"
         }
       },
       "required": ["type"],
@@ -177,20 +199,6 @@
       "discriminator": {
         "propertyName": "type"
       }
-    },
-    "EventBinding": {
-      "type": "object",
-      "properties": {
-        "event": {
-          "$ref": "#/$defs/EventType"
-        },
-        "action": {
-          "$ref": "#/$defs/EventAction"
-        }
-      },
-      "required": ["event", "action"],
-      "additionalProperties": false,
-      "description": "Binds a UI event to a specific action"
     },
     "ButtonProps": {
       "type": "object",
@@ -634,255 +642,255 @@
       "additionalProperties": false,
       "description": "Type-safe props for Chart component"
     },
-    "ButtonComponent": {
+    "ButtonNode": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique node identifier"
+        },
         "type": {
           "const": "button"
         },
-        "id": {
-          "type": "string",
-          "minLength": 1
-        },
         "props": {
           "$ref": "#/$defs/ButtonProps"
-        },
-        "events": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/EventBinding"
-          },
-          "description": "Event handlers"
         }
       },
-      "required": ["type", "id", "props"],
+      "required": ["id", "type", "props"],
       "additionalProperties": false,
-      "description": "Button component with type-safe props"
+      "description": "Button node"
     },
-    "InputComponent": {
+    "InputNode": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique node identifier"
+        },
         "type": {
           "const": "input"
         },
-        "id": {
-          "type": "string",
-          "minLength": 1
-        },
         "props": {
           "$ref": "#/$defs/InputProps"
-        },
-        "events": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/EventBinding"
-          },
-          "description": "Event handlers"
         }
       },
-      "required": ["type", "id", "props"],
+      "required": ["id", "type", "props"],
       "additionalProperties": false,
-      "description": "Input component with type-safe props"
+      "description": "Input node"
     },
-    "TextareaComponent": {
+    "TextareaNode": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique node identifier"
+        },
         "type": {
           "const": "textarea"
         },
-        "id": {
-          "type": "string",
-          "minLength": 1
-        },
         "props": {
           "$ref": "#/$defs/TextareaProps"
-        },
-        "events": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/EventBinding"
-          },
-          "description": "Event handlers"
         }
       },
-      "required": ["type", "id", "props"],
+      "required": ["id", "type", "props"],
       "additionalProperties": false,
-      "description": "Textarea component with type-safe props"
+      "description": "Textarea node"
     },
-    "TextComponent": {
+    "TextNode": {
       "type": "object",
       "properties": {
-        "type": {
-          "const": "text"
-        },
         "id": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Unique node identifier"
+        },
+        "type": {
+          "const": "text"
         },
         "props": {
           "$ref": "#/$defs/TextProps"
         }
       },
-      "required": ["type", "id", "props"],
+      "required": ["id", "type", "props"],
       "additionalProperties": false,
-      "description": "Text component with type-safe props"
+      "description": "Text node"
     },
-    "CardComponent": {
+    "CardNode": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique node identifier"
+        },
         "type": {
           "const": "card"
         },
-        "id": {
-          "type": "string",
-          "minLength": 1
-        },
         "props": {
           "$ref": "#/$defs/CardProps"
-        },
-        "children": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/UIComponent"
-          },
-          "default": [],
-          "description": "Child components"
         }
       },
-      "required": ["type", "id", "props"],
+      "required": ["id", "type", "props"],
       "additionalProperties": false,
-      "description": "Card component with type-safe props"
+      "description": "Card node"
     },
-    "AlertComponent": {
+    "AlertNode": {
       "type": "object",
       "properties": {
-        "type": {
-          "const": "alert"
-        },
         "id": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Unique node identifier"
+        },
+        "type": {
+          "const": "alert"
         },
         "props": {
           "$ref": "#/$defs/AlertProps"
         }
       },
-      "required": ["type", "id", "props"],
+      "required": ["id", "type", "props"],
       "additionalProperties": false,
-      "description": "Alert component with type-safe props"
+      "description": "Alert node"
     },
-    "ContainerComponent": {
+    "ContainerNode": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique node identifier"
+        },
         "type": {
           "const": "container"
         },
-        "id": {
-          "type": "string",
-          "minLength": 1
-        },
         "props": {
           "$ref": "#/$defs/ContainerProps"
-        },
-        "children": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/UIComponent"
-          },
-          "default": [],
-          "description": "Child components"
         }
       },
-      "required": ["type", "id", "props"],
+      "required": ["id", "type", "props"],
       "additionalProperties": false,
-      "description": "Container component with type-safe props"
+      "description": "Container node"
     },
-    "GridComponent": {
+    "GridNode": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique node identifier"
+        },
         "type": {
           "const": "grid"
         },
-        "id": {
-          "type": "string",
-          "minLength": 1
-        },
         "props": {
           "$ref": "#/$defs/GridProps"
-        },
-        "children": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/UIComponent"
-          },
-          "default": [],
-          "description": "Child components"
         }
       },
-      "required": ["type", "id", "props"],
+      "required": ["id", "type", "props"],
       "additionalProperties": false,
-      "description": "Grid layout with type-safe props"
+      "description": "Grid node"
     },
-    "StackComponent": {
+    "StackNode": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique node identifier"
+        },
         "type": {
           "const": "stack"
         },
-        "id": {
-          "type": "string",
-          "minLength": 1
-        },
         "props": {
           "$ref": "#/$defs/StackProps"
-        },
-        "children": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/UIComponent"
-          },
-          "default": [],
-          "description": "Child components"
         }
       },
-      "required": ["type", "id", "props"],
+      "required": ["id", "type", "props"],
       "additionalProperties": false,
-      "description": "Stack layout with type-safe props"
+      "description": "Stack node"
     },
-    "ChartComponent": {
+    "ChartNode": {
       "type": "object",
       "properties": {
-        "type": {
-          "const": "chart"
-        },
         "id": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Unique node identifier"
+        },
+        "type": {
+          "const": "chart"
         },
         "props": {
           "$ref": "#/$defs/ChartProps"
         }
       },
-      "required": ["type", "id", "props"],
+      "required": ["id", "type", "props"],
       "additionalProperties": false,
-      "description": "Chart component with type-safe props"
+      "description": "Chart node"
     },
-    "UIComponent": {
+    "Node": {
       "oneOf": [
-        {"$ref": "#/$defs/ButtonComponent"},
-        {"$ref": "#/$defs/InputComponent"},
-        {"$ref": "#/$defs/TextareaComponent"},
-        {"$ref": "#/$defs/TextComponent"},
-        {"$ref": "#/$defs/CardComponent"},
-        {"$ref": "#/$defs/AlertComponent"},
-        {"$ref": "#/$defs/ContainerComponent"},
-        {"$ref": "#/$defs/GridComponent"},
-        {"$ref": "#/$defs/StackComponent"},
-        {"$ref": "#/$defs/ChartComponent"}
+        {"$ref": "#/$defs/ButtonNode"},
+        {"$ref": "#/$defs/InputNode"},
+        {"$ref": "#/$defs/TextareaNode"},
+        {"$ref": "#/$defs/TextNode"},
+        {"$ref": "#/$defs/CardNode"},
+        {"$ref": "#/$defs/AlertNode"},
+        {"$ref": "#/$defs/ContainerNode"},
+        {"$ref": "#/$defs/GridNode"},
+        {"$ref": "#/$defs/StackNode"},
+        {"$ref": "#/$defs/ChartNode"}
       ],
       "discriminator": {
         "propertyName": "type"
-      }
+      },
+      "description": "A UI component node with unique ID, type, and props"
+    },
+        "Edge": {
+          "type": "object",
+          "properties": {
+            "src": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Parent node ID"
+            },
+            "dest": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Child node ID"
+            },
+            "order": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Rendering order among siblings"
+            }
+          },
+          "required": ["src", "dest", "order"],
+          "additionalProperties": false,
+          "description": "Parent-child relationship between nodes"
+        },
+    "Event": {
+      "type": "object",
+      "properties": {
+        "nodeId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Node ID to bind event to"
+        },
+        "eventType": {
+          "$ref": "#/$defs/EventType"
+        },
+        "action": {
+          "$ref": "#/$defs/EventAction"
+        }
+      },
+      "required": ["nodeId", "eventType", "action"],
+      "additionalProperties": false,
+      "description": "Event binding for a specific node"
     },
     "UIMetadata": {
       "type": "object",
@@ -907,9 +915,14 @@
           "enum": ["shadcn", "material-ui", "chakra-ui", "ant-design"],
           "default": "shadcn",
           "description": "Target UI framework"
+        },
+        "rootId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ID of the root node to start rendering from"
         }
       },
-      "required": ["title"],
+      "required": ["title", "rootId"],
       "additionalProperties": false,
       "description": "Metadata for the UI schema"
     }

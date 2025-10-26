@@ -30,103 +30,11 @@ fi
 # Create output directory if it doesn't exist
 mkdir -p "$(dirname "$OUTPUT_FILE")"
 
-# Generate Zod schemas from JSON Schema
-echo "⚙️  Running json-schema-to-zod..."
-npx json-schema-to-zod \
-    "$SCHEMA_FILE" \
-    --outFile "$OUTPUT_FILE" \
-    --bannerComment "/* tslint:disable */" \
-    --style.singleQuote \
-    --style.semi \
-    --style.trailingComma "es5" \
-    --style.bracketSpacing \
-    --style.printWidth 100
+# Generate Zod schemas from JSON Schema using Node.js script
+echo "⚙️  Using json-schema-to-zod to convert JSON Schema..."
 
-# Add custom header and organize exports
-cat > "$OUTPUT_FILE.tmp" << 'EOF'
-/**
- * Promptius GUI Zod Schemas - Runtime validation schemas for UI components
- * 
- * This file is auto-generated from schema/promptius-gui-schema.json
- * DO NOT EDIT MANUALLY - Use scripts/generate-zod.sh to regenerate
- */
-
-import { z } from 'zod';
-
-// ============================================================================
-// Base Zod Schemas
-// ============================================================================
-
-EOF
-
-# Append the generated content (skip the first few lines that are imports)
-tail -n +10 "$OUTPUT_FILE" >> "$OUTPUT_FILE.tmp"
-
-# Replace the original file
-mv "$OUTPUT_FILE.tmp" "$OUTPUT_FILE"
-
-# Add the public API exports at the end
-cat >> "$OUTPUT_FILE" << 'EOF'
-
-// ============================================================================
-// PUBLIC API EXPORTS
-// ============================================================================
-
-export {
-  // Enums
-  ButtonVariantSchema,
-  ButtonSizeSchema,
-  InputTypeSchema,
-  InputSizeSchema,
-  AlertVariantSchema,
-  TextTagSchema,
-  AlignTextSchema,
-  FlexDirectionSchema,
-  ChartTypeSchema,
-  EventTypeSchema,
-  
-  // Event Actions
-  NavigateActionSchema,
-  SetStateActionSchema,
-  SubmitFormActionSchema,
-  ValidateActionSchema,
-  CustomActionSchema,
-  EventActionSchema,
-  
-  // Component Props
-  ButtonPropsSchema,
-  InputPropsSchema,
-  TextareaPropsSchema,
-  TextPropsSchema,
-  CardPropsSchema,
-  AlertPropsSchema,
-  ContainerPropsSchema,
-  GridPropsSchema,
-  StackPropsSchema,
-  ChartSeriesSchema,
-  AxisXPropsSchema,
-  AxisYPropsSchema,
-  ChartAnnotationSchema,
-  ChartPropsSchema,
-  
-  // Components
-  ButtonComponentSchema,
-  InputComponentSchema,
-  TextareaComponentSchema,
-  TextComponentSchema,
-  CardComponentSchema,
-  AlertComponentSchema,
-  ContainerComponentSchema,
-  GridComponentSchema,
-  StackComponentSchema,
-  ChartComponentSchema,
-  UIComponentSchema,
-  
-  // Schema
-  UIMetadataSchema,
-  UISchemaSchema,
-};
-EOF
+# Run the Node.js generation script
+node "$SCRIPT_DIR/generate-zod.mjs"
 
 echo "✅ Zod schema generation completed!"
 echo "📁 Output: $OUTPUT_FILE"
