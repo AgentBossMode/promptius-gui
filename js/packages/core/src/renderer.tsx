@@ -1,11 +1,57 @@
 import React from 'react';
-import { UIComponent, EventType, EventAction } from '@promptius-gui/schemas';
+import { Node, Edge, Event, EventType, EventAction, PromptiusGUISchema, UISchema } from '@promptius-gui/schemas';
 import { useEventSystem } from './events';
 import { ComponentFactory } from './factory';
 
-export const DynamicRenderer: React.FC<{ component: UIComponent }> = ({ component }) => {
+interface GraphRendererProps {
+  schema: PromptiusGUISchema;
+}
+
+export const GraphRenderer: React.FC<GraphRendererProps> = ({ schema }) => {
   const eventSystem = useEventSystem();
   const adapter = ComponentFactory.getAdapter();
+
+  // Validate schema using Zod before rendering
+  const validationResult = UISchema.safeParse(schema);
+  if (!validationResult.success) {
+    console.error('Schema validation failed:', validationResult.error);
+    return (
+      <div className="p-4 border border-red-300 bg-red-50 rounded-md">
+        <h3 className="text-red-800 font-semibold mb-2">Schema Validation Error</h3>
+        <p className="text-red-700 mb-2">The provided schema is invalid and cannot be rendered.</p>
+        <details className="text-sm text-red-600">
+          <summary className="cursor-pointer font-medium">View validation errors</summary>
+          <pre className="mt-2 p-2 bg-red-100 rounded text-xs overflow-auto">
+            {JSON.stringify(validationResult.error.errors, null, 2)}
+          </pre>
+        </details>
+      </div>
+    );
+  }
+
+  // Use the validated schema
+  const validatedSchema = validationResult.data;
+
+  // Create lookup maps for efficient access
+  const nodeMap = new Map(validatedSchema.nodes.map(node => [node.id, node]));
+  const edgeMap = new Map<string, Edge[]>();
+  const eventMap = new Map<string, Event[]>();
+
+  // Build adjacency list from edges
+  validatedSchema.edges?.forEach(edge => {
+    if (!edgeMap.has(edge.src)) {
+      edgeMap.set(edge.src, []);
+    }
+    edgeMap.get(edge.src)!.push(edge);
+  });
+
+  // Build event map by nodeId
+  validatedSchema.events?.forEach(event => {
+    if (!eventMap.has(event.nodeId)) {
+      eventMap.set(event.nodeId, []);
+    }
+    eventMap.get(event.nodeId)!.push(event);
+  });
 
   const handleEvent = (action: EventAction, originalEvent?: React.SyntheticEvent) => {
     originalEvent?.preventDefault();
@@ -43,67 +89,69 @@ export const DynamicRenderer: React.FC<{ component: UIComponent }> = ({ componen
     }
   };
 
-  const componentAdapter = adapter[component.type];
-  if (!componentAdapter) {
-    return <div>Unknown component type: {component.type}</div>;
-  }
-
-  const processedComponent = { ...component } as any;
-
-  // Normalize props: the generator may provide props as null/undefined or as a JSON string
-  const rawProps = (component as any).props;
-  if (rawProps == null) {
-    processedComponent.props = {};
-  } else if (typeof rawProps === 'string') {
-    try {
-      processedComponent.props = JSON.parse(rawProps);
-    } catch {
-      // If parsing fails, fall back to empty object to avoid runtime crashes
-      processedComponent.props = {};
+  const renderNode = (nodeId: string): React.ReactNode => {
+    const node = nodeMap.get(nodeId);
+    if (!node) {
+      console.warn(`Node with id "${nodeId}" not found`);
+      return null;
     }
-  }
 
-  const children = 'children' in processedComponent
-    ? (processedComponent as unknown as { children?: UIComponent[] }).children?.map((child: UIComponent) => (
-        <DynamicRenderer key={child.id} component={child} />
-      ))
-    : undefined;
+    const componentAdapter = adapter[node.type as keyof typeof adapter];
+    if (!componentAdapter) {
+      return <div>Unknown component type: {node.type}</div>;
+    }
 
-  const renderedComponent = componentAdapter.render(processedComponent, children);
-
-  if ('events' in processedComponent && React.isValidElement(renderedComponent)) {
-    let rawEvents: unknown = (processedComponent as any).events;
-
-    // Normalize events: accept undefined/null, JSON strings, arrays of tuples, or maps
-    if (typeof rawEvents === 'string') {
+    // Normalize props: the generator may provide props as null/undefined or as a JSON string
+    const rawProps = (node as any).props;
+    let processedProps = {};
+    if (rawProps == null) {
+      processedProps = {};
+    } else if (typeof rawProps === 'string') {
       try {
-        rawEvents = JSON.parse(rawEvents);
+        processedProps = JSON.parse(rawProps);
       } catch {
-        rawEvents = undefined;
+        processedProps = {};
       }
+    } else {
+      processedProps = rawProps;
     }
 
-    let entries: [EventType, EventAction][] = [];
+    // Get children nodes (sorted by order)
+    const childEdges = edgeMap.get(nodeId) || [];
+    const sortedChildren = childEdges
+      .sort((a, b) => a.order - b.order)
+      .map(edge => renderNode(edge.dest))
+      .filter(Boolean);
 
-    if (Array.isArray(rawEvents)) {
-      // Expecting [EventType, EventAction][]; filter out invalid items defensively
-      entries = (rawEvents as any[])
-        .filter((item) => Array.isArray(item) && item.length === 2)
-        .map((item) => item as [EventType, EventAction]);
-    } else if (rawEvents && typeof rawEvents === 'object') {
-      // Support map form: { onClick: { type: 'setState', ... }, ... }
-      entries = Object.entries(rawEvents as Record<string, EventAction>)
-        .map(([k, v]) => [k as EventType, v]);
-    }
+    const renderedComponent = componentAdapter.render(
+      { ...node, props: processedProps } as Node,
+      sortedChildren.length > 0 ? sortedChildren : undefined
+    );
 
-    if (entries.length > 0) {
+    // Apply events if any
+    const nodeEvents = eventMap.get(nodeId) || [];
+    if (nodeEvents.length > 0 && React.isValidElement(renderedComponent)) {
       const eventProps: Record<string, any> = {};
-      entries.forEach(([eventName, action]) => {
-        eventProps[eventName] = (e: React.SyntheticEvent) => handleEvent(action, e);
+      nodeEvents.forEach(event => {
+        eventProps[event.eventType] = (e: React.SyntheticEvent) => handleEvent(event.action, e);
       });
       return React.cloneElement(renderedComponent, eventProps);
     }
+
+    return renderedComponent;
+  };
+
+  // Start rendering from the root node
+  const rootNode = nodeMap.get(validatedSchema.metadata.rootId);
+  if (!rootNode) {
+    return <div>Root node with id "{validatedSchema.metadata.rootId}" not found</div>;
   }
 
-  return <>{renderedComponent}</>;
+  return <>{renderNode(validatedSchema.metadata.rootId)}</>;
+};
+
+// Legacy renderer for backward compatibility (if needed)
+export const DynamicRenderer: React.FC<{ component: any }> = ({ component }) => {
+  console.warn('DynamicRenderer is deprecated. Use GraphRenderer with a complete schema instead.');
+  return <div>Legacy renderer not supported in graph-based schema</div>;
 };

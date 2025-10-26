@@ -123,10 +123,15 @@ export const antDesignAdapter: AdapterRegistry['ant-design'] = {
       const padding = 24;
       const colors = props.colors || ['#1677ff', '#722ed1', '#389e0d', '#fa8c16'];
 
-      const maxVal = Math.max(1, ...props.series.flatMap(s => s.data));
+      // Add defensive checks for series data
+      if (!props.series || !Array.isArray(props.series) || props.series.length === 0) {
+        return <Text>No chart data available</Text>;
+      }
+
+      const maxVal = Math.max(1, ...props.series.flatMap(s => s.data || []));
       const innerWidth = width - padding * 2;
       const innerHeight = height - padding * 2;
-      const labels = props.labels || props.series[0]?.data.map((_, i) => String(i + 1)) || [];
+      const labels = props.labels || props.series[0]?.data?.map((_, i) => String(i + 1)) || [];
 
       const renderAxesAndAnnotations = (svgChildren: React.ReactNode) => {
         const ticks = props.xAxis?.ticks || labels;
@@ -201,7 +206,7 @@ export const antDesignAdapter: AdapterRegistry['ant-design'] = {
                   <g>
                     {props.series.map((s, si) => (
                       <g key={si} fill={colors[si % colors.length]}>
-                        {s.data.map((val, i) => {
+                        {(s.data || []).map((val, i) => {
                           const x = i * groupWidth + si * barWidth;
                           const h = (val / maxVal) * innerHeight;
                           const y = innerHeight - h;
@@ -238,7 +243,7 @@ export const antDesignAdapter: AdapterRegistry['ant-design'] = {
                 {renderAxesAndAnnotations(
                   <g>
                     {props.series.map((s, si) => {
-                      const points = s.data.map((val, i) => {
+                      const points = (s.data || []).map((val, i) => {
                         const x = i * xStep;
                         const y = innerHeight - (val / maxVal) * innerHeight;
                         return `${x},${y}`;

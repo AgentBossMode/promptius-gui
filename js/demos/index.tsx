@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from '../src/components/ui/card';
 import { Input } from '../src/components/ui/input';
-import { UISchema } from '@promptius-gui/schemas';
+import { PromptiusGUISchema, Node, Edge, Event } from '@promptius-gui/schemas';
 import UIFactory from '@promptius-gui/core';
 import '@promptius-gui/material-ui';
 import '@promptius-gui/chakra-ui';
@@ -32,8 +32,7 @@ import {
   Check,
   Loader2,
   Github,
-  Star,
-  GripVertical
+  Star
 } from 'lucide-react';
 
 const materialUITheme = createTheme({
@@ -63,8 +62,61 @@ const chakraTheme = extendTheme({
   },
 });
 
+// Helper function to convert nested structure to graph format
+const convertToGraph = (nestedSchema: any): PromptiusGUISchema => {
+  const nodes: Node[] = [];
+  const edges: Edge[] = [];
+  const events: Event[] = [];
+
+  const processNode = (node: any, parentId?: string, order: number = 0) => {
+    // Add current node
+    const { children, events: nodeEvents, ...nodeData } = node;
+    nodes.push(nodeData);
+
+            // Add edge if has parent
+            if (parentId) {
+              edges.push({
+                src: parentId,
+                dest: node.id,
+                order
+              });
+            }
+
+    // Process children
+    if (children && Array.isArray(children)) {
+      children.forEach((child: any, index: number) => {
+        processNode(child, node.id, index);
+      });
+    }
+
+    // Process events
+    if (nodeEvents && Array.isArray(nodeEvents)) {
+      nodeEvents.forEach((event: any) => {
+        events.push({
+          nodeId: node.id,
+          eventType: event.event,
+          action: event.action
+        });
+      });
+    }
+  };
+
+  // Process root node
+  processNode(nestedSchema.root);
+
+  return {
+    metadata: {
+      ...nestedSchema.metadata,
+      rootId: nestedSchema.root.id
+    },
+    nodes,
+    edges,
+    events
+  };
+};
+
 const demoSchemas = {
-  form: {
+  form: convertToGraph({
     metadata: {
       title: 'User Registration',
       description: 'Dynamic form with multiple UI framework support',
@@ -154,9 +206,9 @@ const demoSchemas = {
         },
       ],
     },
-  } as UISchema,
+  }),
 
-  dashboard: {
+  dashboard: convertToGraph({
     metadata: {
       title: 'Analytics Dashboard',
       description: 'A responsive dashboard layout',
@@ -243,9 +295,9 @@ const demoSchemas = {
         },
       ],
     },
-  } as UISchema,
+  }),
 
-  charts: {
+  charts: convertToGraph({
     metadata: {
       title: 'Charts Gallery',
       description: 'Bar, Line, and Pie charts rendered via UiSchema',
@@ -311,19 +363,17 @@ const demoSchemas = {
         },
       ],
     },
-  } as unknown as UISchema,
+  }),
 };
 
 function App() {
   const [selectedAdapter, setSelectedAdapter] = useState<string>('material-ui');
   const [selectedDemo, setSelectedDemo] = useState<'form' | 'dashboard' | 'charts' | 'dynamic'>('form');
-  const [dynamicSchema, setDynamicSchema] = useState<UISchema | null>(null);
+  const [dynamicSchema, setDynamicSchema] = useState<PromptiusGUISchema | null>(null);
   const [prompt, setPrompt] = useState<string>('');
   const [serverReady, setServerReady] = useState<boolean>(false);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
-  const [schemaWidth, setSchemaWidth] = useState<number>(50); // Percentage
-  const [isResizing, setIsResizing] = useState<boolean>(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -343,39 +393,6 @@ function App() {
     };
   }, []);
 
-  // Resize functionality
-  const handleMouseDown = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsResizing(true);
-  };
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isResizing) return;
-      
-      const container = document.querySelector('.resize-container');
-      if (!container) return;
-      
-      const rect = container.getBoundingClientRect();
-      const newWidth = ((e.clientX - rect.left) / rect.width) * 100;
-      const clampedWidth = Math.min(Math.max(newWidth, 20), 80); // Min 20%, Max 80%
-      setSchemaWidth(clampedWidth);
-    };
-
-    const handleMouseUp = () => {
-      setIsResizing(false);
-    };
-
-    if (isResizing) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-    }
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isResizing]);
 
   const adaptersInfo = [
     { id: 'material-ui', name: 'Material UI', color: 'indigo' },
@@ -577,13 +594,35 @@ function App() {
           </CardContent>
         </Card>
 
-        {/* Split View */}
-        <div className="resize-container flex flex-col md:flex-row gap-6" style={{ display: 'flex', flexDirection: 'row', gap: '24px' }}>
-          {/* Schema Panel */}
-          <Card 
-            className="border-2 flex flex-col h-[700px]" 
-            style={{ width: `${schemaWidth}%`, minWidth: '200px' }}
-          >
+        {/* Top-Bottom Layout */}
+        <div className="flex flex-col gap-6">
+          {/* Preview Panel - Top */}
+          <Card className="border-2 flex flex-col h-[500px]">
+            <CardHeader className="border-b bg-slate-50 flex-shrink-0">
+              <div className="flex items-center gap-3">
+                <Eye className="h-5 w-5 text-slate-600" />
+                <CardTitle className="text-lg">Preview</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="p-4 flex-1 overflow-auto">
+              <div className="h-full rounded-lg bg-white border-2 border-dashed border-slate-200 p-4">
+                {selectedAdapter === 'chakra-ui' ? (
+                  <ChakraProvider theme={chakraTheme}>
+                    <UIFactory key={`${selectedAdapter}-${selectedDemo}`} schema={schemaWithAdapter} />
+                  </ChakraProvider>
+                ) : selectedAdapter === 'material-ui' ? (
+                  <ThemeProvider theme={materialUITheme}>
+                    <UIFactory key={`${selectedAdapter}-${selectedDemo}`} schema={schemaWithAdapter} />
+                  </ThemeProvider>
+                ) : (
+                  <UIFactory key={`${selectedAdapter}-${selectedDemo}`} schema={schemaWithAdapter} />
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Schema Panel - Bottom */}
+          <Card className="border-2 flex flex-col h-[400px]">
             <CardHeader className="border-b bg-slate-50 flex-shrink-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -617,54 +656,6 @@ function App() {
               >
                 {currentSchemaString}
               </SyntaxHighlighter>
-            </CardContent>
-          </Card>
-
-          {/* Resize Handle */}
-          <div 
-            className={`flex w-6 bg-slate-100 hover:bg-slate-200 cursor-col-resize transition-all duration-200 group ${
-              isResizing ? 'bg-indigo-200 hover:bg-indigo-300' : ''
-            }`}
-            onMouseDown={handleMouseDown}
-            style={{ minHeight: '700px' }}
-          >
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="flex flex-col items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                <GripVertical className="h-4 w-4 text-slate-500 group-hover:text-slate-700" />
-                <div className="flex flex-col gap-0.5">
-                  <div className="w-0.5 h-1 bg-slate-400 rounded-full"></div>
-                  <div className="w-0.5 h-1 bg-slate-400 rounded-full"></div>
-                  <div className="w-0.5 h-1 bg-slate-400 rounded-full"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Preview Panel */}
-          <Card 
-            className="border-2 flex flex-col h-[700px]" 
-            style={{ width: `${100 - schemaWidth}%`, minWidth: '200px' }}
-          >
-            <CardHeader className="border-b bg-slate-50 flex-shrink-0">
-              <div className="flex items-center gap-3">
-                <Eye className="h-5 w-5 text-slate-600" />
-                <CardTitle className="text-lg">Preview</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="p-4 flex-1 overflow-auto">
-              <div className="h-full rounded-lg bg-white border-2 border-dashed border-slate-200 p-4">
-                {selectedAdapter === 'chakra-ui' ? (
-                  <ChakraProvider theme={chakraTheme}>
-                    <UIFactory key={`${selectedAdapter}-${selectedDemo}`} schema={schemaWithAdapter} />
-                  </ChakraProvider>
-                ) : selectedAdapter === 'material-ui' ? (
-                  <ThemeProvider theme={materialUITheme}>
-                    <UIFactory key={`${selectedAdapter}-${selectedDemo}`} schema={schemaWithAdapter} />
-                  </ThemeProvider>
-                ) : (
-                  <UIFactory key={`${selectedAdapter}-${selectedDemo}`} schema={schemaWithAdapter} />
-                )}
-              </div>
             </CardContent>
           </Card>
         </div>

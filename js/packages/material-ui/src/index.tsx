@@ -12,7 +12,7 @@ import {
   Box,
 } from '@mui/material';
 import { AdapterRegistry } from '@promptius-gui/adapters';
-import { ButtonProps, InputProps, TextProps, CardProps, AlertProps, ContainerProps, GridProps, StackProps, UIComponent, ChartProps } from '@promptius-gui/schemas';
+import { ButtonProps, InputProps, TextProps, CardProps, AlertProps, ContainerProps, GridProps, StackProps, Node, ChartProps } from '@promptius-gui/schemas';
 import { ComponentFactory } from '@promptius-gui/core';
 
 export const materialUIAdapter: AdapterRegistry['material-ui'] = {
