@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Type-safe UI schema definitions for cross-platform UI generation"
 readme = "README.md"
 license = {file = "LICENSE"}
-requires-python = ">=3.8"
+requires-python = ">=3.8.1"
 authors = [
     {name = "Kanishk Gupta", email = "51890299+kanishkgupta2000@users.noreply.github.com"},
 ]
@@ -44,6 +44,7 @@ Documentation = "https://github.com/AgentBossMode/promptius-gui#readme"
 
 [project.optional-dependencies]
 dev = [
+    "langsmith>=0.1.147",
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
     "black>=23.0.0",
@@ -68,3 +69,11 @@ python_version = "3.8"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
+
+[dependency-groups]
+dev = [
+    "fastapi>=0.120.0",
+    "langchain-openai>=0.1.25",
+    "python-dotenv>=1.0.1",
+    "uvicorn>=0.33.0",
+]

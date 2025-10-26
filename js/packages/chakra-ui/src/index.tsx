@@ -209,7 +209,7 @@ export const chakraUIAdapter: AdapterRegistry['chakra-ui'] = {
                 {renderAxesAndAnnotations(
                   <g>
                     {props.series.map((s, si) => {
-                      const points = s.data.map((val, i) => {
+                      const points = (s.data || []).map((val, i) => {
                         const x = i * xStep;
                         const y = innerHeight - (val / maxVal) * innerHeight;
                         return `${x},${y}`;

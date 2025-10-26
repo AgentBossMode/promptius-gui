@@ -1,10 +1,10 @@
 import React from 'react';
-import { UISchema } from '@promptius-gui/schemas';
+import { PromptiusGUISchema } from '@promptius-gui/schemas';
 import { EventSystemProvider } from './events';
 import { ComponentFactory } from './factory';
-import { DynamicRenderer } from './renderer';
+import { GraphRenderer } from './renderer';
 
-const UIFactory: React.FC<{ schema: UISchema }> = ({ schema }) => {
+const UIFactory: React.FC<{ schema: PromptiusGUISchema }> = ({ schema }) => {
   if (schema.metadata?.framework) {
     ComponentFactory.useAdapter(schema.metadata.framework);
   }
@@ -18,7 +18,7 @@ const UIFactory: React.FC<{ schema: UISchema }> = ({ schema }) => {
         {schema.metadata?.description && (
           <p className="text-gray-600 mb-6">{schema.metadata.description}</p>
         )}
-        <DynamicRenderer component={schema.root} />
+        <GraphRenderer schema={schema} />
       </div>
     </EventSystemProvider>
   );
@@ -27,5 +27,5 @@ const UIFactory: React.FC<{ schema: UISchema }> = ({ schema }) => {
 export default UIFactory;
 export { EventSystemProvider, useEventSystem } from './events';
 export { ComponentFactory } from './factory';
-export { DynamicRenderer } from './renderer';
+export { GraphRenderer, DynamicRenderer } from './renderer';
 export type { AdapterRegistry, ComponentAdapter } from '@promptius-gui/adapters';
