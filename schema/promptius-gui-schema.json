@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/AgentBossMode/promptius-gui/schema/promptius-gui-schema.json",
   "title": "Promptius GUI Schema",
-  "description": "Type-safe UI schema definitions for cross-platform UI generation using graph-based structure",
+  "description": "Type-safe UI schema definitions for cross-platform UI generation using graph-based structure. This schema defines UI components as nodes in a graph, connected by edges to form a hierarchical component tree. The rootId in metadata specifies which node serves as the root of the component tree and MUST exist as an id in the nodes array.",
   "version": "2.0.0",
   "type": "object",
   "properties": {
@@ -14,26 +14,25 @@
       "items": {
         "$ref": "#/$defs/Node"
       },
-      "description": "Array of UI component nodes"
+      "minItems": 1,
+      "description": "Array of all UI component nodes. Each node represents a UI component (button, input, container, etc.) with a unique id. The rootId specified in metadata.rootId MUST exist as one of these node ids."
     },
     "edges": {
       "type": "array",
       "items": {
         "$ref": "#/$defs/Edge"
       },
-      "default": [],
-      "description": "Array of parent-child relationships"
+      "description": "Array of edges defining parent-child relationships in the component tree. Each edge connects a parent node (src) to a child node (dest) and specifies the rendering order (order). Edges define the hierarchical structure: nodes without incoming edges are top-level, and children are nested within their parent components. If a node has no edges pointing to it, it is an orphan and won't be rendered unless it's the root node."
     },
     "events": {
       "type": "array",
       "items": {
         "$ref": "#/$defs/Event"
       },
-      "default": [],
-      "description": "Array of event bindings"
+      "description": "Array of event bindings that connect user interactions (onClick, onSubmit, onChange, etc.) to specific nodes. Each event specifies the nodeId (which MUST exist in the nodes array), the eventType, and the action to perform when the event is triggered."
     }
   },
-  "required": ["metadata", "nodes"],
+  "required": ["metadata", "nodes", "edges", "events"],
   "additionalProperties": false,
   "$defs": {
     "ButtonVariant": {
@@ -648,7 +647,7 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "description": "Unique node identifier"
+          "description": "Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids."
         },
         "type": {
           "const": "button"
@@ -667,7 +666,7 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "description": "Unique node identifier"
+          "description": "Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids."
         },
         "type": {
           "const": "input"
@@ -686,7 +685,7 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "description": "Unique node identifier"
+          "description": "Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids."
         },
         "type": {
           "const": "textarea"
@@ -705,7 +704,7 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "description": "Unique node identifier"
+          "description": "Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids."
         },
         "type": {
           "const": "text"
@@ -724,7 +723,7 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "description": "Unique node identifier"
+          "description": "Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids."
         },
         "type": {
           "const": "card"
@@ -743,7 +742,7 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "description": "Unique node identifier"
+          "description": "Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids."
         },
         "type": {
           "const": "alert"
@@ -762,7 +761,7 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "description": "Unique node identifier"
+          "description": "Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids."
         },
         "type": {
           "const": "container"
@@ -781,7 +780,7 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "description": "Unique node identifier"
+          "description": "Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids."
         },
         "type": {
           "const": "grid"
@@ -800,7 +799,7 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "description": "Unique node identifier"
+          "description": "Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids."
         },
         "type": {
           "const": "stack"
@@ -819,7 +818,7 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "description": "Unique node identifier"
+          "description": "Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids."
         },
         "type": {
           "const": "chart"
@@ -848,7 +847,7 @@
       "discriminator": {
         "propertyName": "type"
       },
-      "description": "A UI component node with unique ID, type, and props"
+      "description": "A UI component node with a unique id (must be unique across all nodes), a type that determines the component type (button, input, container, etc.), and props that define the component's properties and behavior. Each node's id may be referenced by edges (as src or dest) and events (as nodeId)."
     },
         "Edge": {
           "type": "object",
@@ -856,22 +855,22 @@
             "src": {
               "type": "string",
               "minLength": 1,
-              "description": "Parent node ID"
+              "description": "The ID of the parent node. This MUST match the id of a node in the nodes array. The parent node will contain this child as a nested component."
             },
             "dest": {
               "type": "string",
               "minLength": 1,
-              "description": "Child node ID"
+              "description": "The ID of the child node. This MUST match the id of a node in the nodes array. This child will be rendered inside the parent node (src)."
             },
             "order": {
               "type": "integer",
               "minimum": 0,
-              "description": "Rendering order among siblings"
+              "description": "The rendering order among sibling children. Lower numbers are rendered first. If multiple edges have the same parent (src), their children will be rendered in ascending order of this value."
             }
           },
           "required": ["src", "dest", "order"],
           "additionalProperties": false,
-          "description": "Parent-child relationship between nodes"
+          "description": "Defines a parent-child relationship in the component tree. The src node will contain the dest node as a child, and the order determines the position relative to other children of the same parent."
         },
     "Event": {
       "type": "object",
@@ -879,7 +878,7 @@
         "nodeId": {
           "type": "string",
           "minLength": 1,
-          "description": "Node ID to bind event to"
+          "description": "The ID of the node to bind this event to. This MUST match the id of a node in the nodes array. When the specified eventType occurs on this node, the associated action will be executed."
         },
         "eventType": {
           "$ref": "#/$defs/EventType"
@@ -890,7 +889,7 @@
       },
       "required": ["nodeId", "eventType", "action"],
       "additionalProperties": false,
-      "description": "Event binding for a specific node"
+      "description": "Binds a user interaction event to a specific node and defines the action to execute when the event occurs. The nodeId must reference a valid node, and the eventType specifies which interaction triggers this event (e.g., onClick, onSubmit, onChange)."
     },
     "UIMetadata": {
       "type": "object",
@@ -919,12 +918,12 @@
         "rootId": {
           "type": "string",
           "minLength": 1,
-          "description": "ID of the root node to start rendering from"
+          "description": "The ID of the root node that serves as the entry point for rendering the UI tree. This value MUST match the id field of exactly one node in the nodes array. The renderer will start building the UI hierarchy from this root node and traverse the edges to render child components in the specified order."
         }
       },
       "required": ["title", "rootId"],
       "additionalProperties": false,
-      "description": "Metadata for the UI schema"
+      "description": "Metadata for the UI schema including title, description, version, target framework, and most importantly rootId which specifies which node serves as the root of the component tree. The rootId MUST exist in the nodes array."
     }
   }
 }

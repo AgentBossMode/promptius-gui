@@ -140,12 +140,12 @@ export const UISchema = z.object({
     label: z.any()
   }).strict()).optional()
   }).strict()
-  }).strict()])),
+  }).strict()])).min(1),
     edges: z.array(z.object({
     src: z.string().min(1),
     dest: z.string().min(1),
     order: z.number().int().min(0)
-  }).strict()).default([]),
+  }).strict()),
     events: z.array(z.object({
     nodeId: z.string().min(1),
     eventType: z.enum(["onClick", "onSubmit", "onChange", "onFocus", "onBlur"]),
@@ -168,7 +168,7 @@ export const UISchema = z.object({
     type: z.literal("custom"),
     handler: z.string().min(1)
   }).strict()])
-  }).strict()).default([])
+  }).strict())
   }).strict();
 
 // Individual component schemas

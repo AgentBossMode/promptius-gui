@@ -1,7 +1,7 @@
 /* tslint:disable */
 
 /**
- * A UI component node with unique ID, type, and props
+ * A UI component node with a unique id (must be unique across all nodes), a type that determines the component type (button, input, container, etc.), and props that define the component's properties and behavior. Each node's id may be referenced by edges (as src or dest) and events (as nodeId).
  *
  * This interface was referenced by `PromptiusGUISchema`'s JSON-Schema
  * via the `definition` "Node".
@@ -107,25 +107,27 @@ export type FlexDirection = 'row' | 'column';
 export type ChartType = 'bar' | 'line' | 'pie';
 
 /**
- * Type-safe UI schema definitions for cross-platform UI generation using graph-based structure
+ * Type-safe UI schema definitions for cross-platform UI generation using graph-based structure. This schema defines UI components as nodes in a graph, connected by edges to form a hierarchical component tree. The rootId in metadata specifies which node serves as the root of the component tree and MUST exist as an id in the nodes array.
  */
 export interface PromptiusGUISchema {
   metadata: UIMetadata;
   /**
-   * Array of UI component nodes
+   * Array of all UI component nodes. Each node represents a UI component (button, input, container, etc.) with a unique id. The rootId specified in metadata.rootId MUST exist as one of these node ids.
+   *
+   * @minItems 1
    */
-  nodes: Node[];
+  nodes: [Node, ...Node[]];
   /**
-   * Array of parent-child relationships
+   * Array of edges defining parent-child relationships in the component tree. Each edge connects a parent node (src) to a child node (dest) and specifies the rendering order (order). Edges define the hierarchical structure: nodes without incoming edges are top-level, and children are nested within their parent components. If a node has no edges pointing to it, it is an orphan and won't be rendered unless it's the root node.
    */
-  edges?: Edge[];
+  edges: Edge[];
   /**
-   * Array of event bindings
+   * Array of event bindings that connect user interactions (onClick, onSubmit, onChange, etc.) to specific nodes. Each event specifies the nodeId (which MUST exist in the nodes array), the eventType, and the action to perform when the event is triggered.
    */
-  events?: Event[];
+  events: Event[];
 }
 /**
- * Metadata for the UI schema
+ * Metadata for the UI schema including title, description, version, target framework, and most importantly rootId which specifies which node serves as the root of the component tree. The rootId MUST exist in the nodes array.
  *
  * This interface was referenced by `PromptiusGUISchema`'s JSON-Schema
  * via the `definition` "UIMetadata".
@@ -148,7 +150,7 @@ export interface UIMetadata {
    */
   framework?: 'shadcn' | 'material-ui' | 'chakra-ui' | 'ant-design';
   /**
-   * ID of the root node to start rendering from
+   * The ID of the root node that serves as the entry point for rendering the UI tree. This value MUST match the id field of exactly one node in the nodes array. The renderer will start building the UI hierarchy from this root node and traverse the edges to render child components in the specified order.
    */
   rootId: string;
 }
@@ -160,7 +162,7 @@ export interface UIMetadata {
  */
 export interface ButtonNode {
   /**
-   * Unique node identifier
+   * Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids.
    */
   id: string;
   type: 'button';
@@ -197,7 +199,7 @@ export interface ButtonProps {
  */
 export interface InputNode {
   /**
-   * Unique node identifier
+   * Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids.
    */
   id: string;
   type: 'input';
@@ -253,7 +255,7 @@ export interface InputProps {
  */
 export interface TextareaNode {
   /**
-   * Unique node identifier
+   * Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids.
    */
   id: string;
   type: 'textarea';
@@ -297,7 +299,7 @@ export interface TextareaProps {
  */
 export interface TextNode {
   /**
-   * Unique node identifier
+   * Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids.
    */
   id: string;
   type: 'text';
@@ -337,7 +339,7 @@ export interface TextProps {
  */
 export interface CardNode {
   /**
-   * Unique node identifier
+   * Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids.
    */
   id: string;
   type: 'card';
@@ -375,7 +377,7 @@ export interface CardProps {
  */
 export interface AlertNode {
   /**
-   * Unique node identifier
+   * Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids.
    */
   id: string;
   type: 'alert';
@@ -410,7 +412,7 @@ export interface AlertProps {
  */
 export interface ContainerNode {
   /**
-   * Unique node identifier
+   * Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids.
    */
   id: string;
   type: 'container';
@@ -441,7 +443,7 @@ export interface ContainerProps {
  */
 export interface GridNode {
   /**
-   * Unique node identifier
+   * Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids.
    */
   id: string;
   type: 'grid';
@@ -475,7 +477,7 @@ export interface GridProps {
  */
 export interface StackNode {
   /**
-   * Unique node identifier
+   * Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids.
    */
   id: string;
   type: 'stack';
@@ -509,7 +511,7 @@ export interface StackProps {
  */
 export interface ChartNode {
   /**
-   * Unique node identifier
+   * Unique node identifier. This id must be unique across all nodes in the nodes array. It is used to reference this node in edges (as src or dest) and events (as nodeId). The rootId in metadata must match one of these ids.
    */
   id: string;
   type: 'chart';
@@ -638,34 +640,34 @@ export interface ChartAnnotation {
   label: string;
 }
 /**
- * Parent-child relationship between nodes
+ * Defines a parent-child relationship in the component tree. The src node will contain the dest node as a child, and the order determines the position relative to other children of the same parent.
  *
  * This interface was referenced by `PromptiusGUISchema`'s JSON-Schema
  * via the `definition` "Edge".
  */
 export interface Edge {
   /**
-   * Parent node ID
+   * The ID of the parent node. This MUST match the id of a node in the nodes array. The parent node will contain this child as a nested component.
    */
   src: string;
   /**
-   * Child node ID
+   * The ID of the child node. This MUST match the id of a node in the nodes array. This child will be rendered inside the parent node (src).
    */
   dest: string;
   /**
-   * Rendering order among siblings
+   * The rendering order among sibling children. Lower numbers are rendered first. If multiple edges have the same parent (src), their children will be rendered in ascending order of this value.
    */
   order: number;
 }
 /**
- * Event binding for a specific node
+ * Binds a user interaction event to a specific node and defines the action to execute when the event occurs. The nodeId must reference a valid node, and the eventType specifies which interaction triggers this event (e.g., onClick, onSubmit, onChange).
  *
  * This interface was referenced by `PromptiusGUISchema`'s JSON-Schema
  * via the `definition` "Event".
  */
 export interface Event {
   /**
-   * Node ID to bind event to
+   * The ID of the node to bind this event to. This MUST match the id of a node in the nodes array. When the specified eventType occurs on this node, the associated action will be executed.
    */
   nodeId: string;
   eventType: EventType;
@@ -748,9 +750,6 @@ export interface CustomAction {
    */
   handler: string;
 }
-
-// Export Zod schemas for runtime validation
-export * from './zod';
 
 // Export Zod schemas for runtime validation
 export * from './zod';

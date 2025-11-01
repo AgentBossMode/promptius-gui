@@ -9,6 +9,21 @@ import sys
 from pathlib import Path
 
 
+def remove_extra_forbid_config(content):
+    """Remove ConfigDict(extra='forbid') from all model classes"""
+    
+    # Pattern to match ConfigDict with extra='forbid' - handles multi-line format
+    # Matches:
+    #     model_config = ConfigDict(
+    #         extra='forbid',
+    #     )
+    pattern = r'    model_config\s*=\s*ConfigDict\s*\(\s*\n\s+extra\s*=\s*[\'"]forbid[\'"]\s*,?\s*\n\s+\)\s*\n'
+    
+    content = re.sub(pattern, '', content, flags=re.MULTILINE)
+    
+    return content
+
+
 def fix_rootmodel_to_union(content):
     """Replace RootModel classes with Union type aliases to avoid oneOf in JSON schema"""
     
@@ -60,14 +75,15 @@ def main():
     output_file = Path(sys.argv[2])
     
     # Read the generated file
-    with open(input_file, 'r') as f:
+    with open(input_file, 'r', encoding='utf-8') as f:
         content = f.read()
     
     # Apply fixes
+    content = remove_extra_forbid_config(content)
     fixed_content = fix_rootmodel_to_union(content)
     
     # Write the fixed content
-    with open(output_file, 'w') as f:
+    with open(output_file, 'w', encoding='utf-8') as f:
         f.write(fixed_content)
     
     print("✅ Post-processing completed!")
