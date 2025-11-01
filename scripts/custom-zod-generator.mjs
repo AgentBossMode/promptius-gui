@@ -28,6 +28,31 @@ function resolveRef(schema, ref, definitions) {
   return definitions[defName];
 }
 
+// Helper function to check if a schema represents an object or array type
+// (needed to determine if we should use .nullish() vs .optional())
+function isObjectOrArrayType(schema, definitions, depth = 0) {
+  if (depth > 10) return false;
+  
+  // Handle $ref by resolving and checking the resolved type
+  if (schema.$ref) {
+    const resolved = resolveRef(schema, schema.$ref, definitions);
+    return isObjectOrArrayType(resolved, definitions, depth + 1);
+  }
+  
+  // Direct type check
+  if (schema.type === 'object' || schema.type === 'array') {
+    return true;
+  }
+  
+  // Check oneOf/anyOf for object/array types
+  if (schema.oneOf || schema.anyOf) {
+    const options = schema.oneOf || schema.anyOf;
+    return options.some(option => isObjectOrArrayType(option, definitions, depth + 1));
+  }
+  
+  return false;
+}
+
 // Convert JSON Schema type to Zod
 function jsonSchemaToZod(schema, definitions, depth = 0) {
   if (depth > 10) {
@@ -121,13 +146,20 @@ function jsonSchemaToZod(schema, definitions, depth = 0) {
       const zodType = jsonSchemaToZod(propSchema, definitions, depth + 1);
       const isRequired = required.includes(key);
       const hasDefault = propSchema.default !== undefined;
+      const isObjectOrArray = isObjectOrArrayType(propSchema, definitions);
       
       let zod = zodType;
       if (hasDefault) {
         zod += `.default(${JSON.stringify(propSchema.default)})`;
       }
       if (!isRequired && !hasDefault) {
-        zod += '.optional()';
+        // Use .nullish() for object/array types to handle Pydantic's null serialization
+        // .nullish() allows both null and undefined, while .optional() only allows undefined
+        if (isObjectOrArray) {
+          zod += '.nullish()';
+        } else {
+          zod += '.optional()';
+        }
       }
       
       return `    ${key}: ${zod}`;

@@ -114,31 +114,31 @@ export const UISchema = z.object({
     chartType: z.enum(["bar", "line", "pie"]),
     width: z.number().int().min(100).max(4000).optional(),
     height: z.number().int().min(100).max(4000).optional(),
-    labels: z.array(z.string()).optional(),
+    labels: z.array(z.string()).nullish(),
     series: z.array(z.object({
     name: z.any().optional(),
     data: z.any()
   }).strict()).min(1),
-    colors: z.array(z.string()).optional(),
+    colors: z.array(z.string()).nullish(),
     title: z.string().optional(),
     showLegend: z.boolean().default(true),
     legendPosition: z.enum(["top", "right", "bottom", "left"]).default("top"),
     xAxis: z.object({
     label: z.string().optional(),
-    ticks: z.array(z.any()).optional(),
+    ticks: z.array(z.any()).nullish(),
     showGrid: z.boolean().default(false)
-  }).strict().optional(),
+  }).strict().nullish(),
     yAxis: z.object({
     label: z.string().optional(),
     min: z.number().optional(),
     max: z.number().optional(),
     showGrid: z.boolean().default(false)
-  }).strict().optional(),
+  }).strict().nullish(),
     annotations: z.array(z.object({
     x: z.any().optional(),
     y: z.any().optional(),
     label: z.any()
-  }).strict()).optional()
+  }).strict()).nullish()
   }).strict()
   }).strict()])).min(1),
     edges: z.array(z.object({
@@ -232,31 +232,31 @@ export const ChartPropsSchema = z.object({
     chartType: z.enum(["bar", "line", "pie"]),
     width: z.number().int().min(100).max(4000).optional(),
     height: z.number().int().min(100).max(4000).optional(),
-    labels: z.array(z.string()).optional(),
+    labels: z.array(z.string()).nullish(),
     series: z.array(z.object({
     name: z.string().optional(),
     data: z.array(z.number()).min(1)
   }).strict()).min(1),
-    colors: z.array(z.string()).optional(),
+    colors: z.array(z.string()).nullish(),
     title: z.string().optional(),
     showLegend: z.boolean().default(true),
     legendPosition: z.enum(["top", "right", "bottom", "left"]).default("top"),
     xAxis: z.object({
     label: z.string().optional(),
-    ticks: z.array(z.string()).optional(),
+    ticks: z.array(z.string()).nullish(),
     showGrid: z.boolean().default(false)
-  }).strict().optional(),
+  }).strict().nullish(),
     yAxis: z.object({
     label: z.string().optional(),
     min: z.number().optional(),
     max: z.number().optional(),
     showGrid: z.boolean().default(false)
-  }).strict().optional(),
+  }).strict().nullish(),
     annotations: z.array(z.object({
     x: z.number().optional(),
     y: z.number().optional(),
     label: z.string()
-  }).strict()).optional()
+  }).strict()).nullish()
   }).strict();
 
 export const EventTypeSchema = z.enum(["onClick", "onSubmit", "onChange", "onFocus", "onBlur"]);
@@ -377,31 +377,31 @@ export const NodeSchema = z.union([z.object({
     chartType: z.enum(["bar", "line", "pie"]),
     width: z.number().int().min(100).max(4000).optional(),
     height: z.number().int().min(100).max(4000).optional(),
-    labels: z.array(z.string()).optional(),
+    labels: z.array(z.string()).nullish(),
     series: z.array(z.object({
     name: z.string().optional(),
     data: z.array(z.number()).min(1)
   }).strict()).min(1),
-    colors: z.array(z.string()).optional(),
+    colors: z.array(z.string()).nullish(),
     title: z.string().optional(),
     showLegend: z.boolean().default(true),
     legendPosition: z.enum(["top", "right", "bottom", "left"]).default("top"),
     xAxis: z.object({
     label: z.string().optional(),
-    ticks: z.array(z.string()).optional(),
+    ticks: z.array(z.string()).nullish(),
     showGrid: z.boolean().default(false)
-  }).strict().optional(),
+  }).strict().nullish(),
     yAxis: z.object({
     label: z.string().optional(),
     min: z.number().optional(),
     max: z.number().optional(),
     showGrid: z.boolean().default(false)
-  }).strict().optional(),
+  }).strict().nullish(),
     annotations: z.array(z.object({
     x: z.number().optional(),
     y: z.number().optional(),
     label: z.string()
-  }).strict()).optional()
+  }).strict()).nullish()
   }).strict()
   }).strict()]);
 
