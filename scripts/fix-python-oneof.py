@@ -41,7 +41,8 @@ def fix_rootmodel_to_union(content):
     content = re.sub(eventaction_pattern, eventaction_replacement, content, flags=re.MULTILINE | re.DOTALL)
     
     # Fix Node - replace RootModel with Union type alias  
-    node_pattern = r'class Node\(\s*RootModel\[\s*Union\[\s*ButtonNode,\s*InputNode,\s*TextareaNode,\s*TextNode,\s*CardNode,\s*AlertNode,\s*ContainerNode,\s*GridNode,\s*StackNode,\s*ChartNode,\s*\]\s*\]\s*\):\s*root: Union\[\s*ButtonNode,\s*InputNode,\s*TextareaNode,\s*TextNode,\s*CardNode,\s*AlertNode,\s*ContainerNode,\s*GridNode,\s*StackNode,\s*ChartNode,\s*\] = Field\(\s*\.\.\.,\s*description=\'A UI component node with unique ID, type, and props\',\s*discriminator=\'type\',\s*\)'
+    # Match any description text (single or double quotes, any content)
+    node_pattern = r'class Node\(\s*RootModel\[\s*Union\[\s*ButtonNode,\s*InputNode,\s*TextareaNode,\s*TextNode,\s*CardNode,\s*AlertNode,\s*ContainerNode,\s*GridNode,\s*StackNode,\s*ChartNode,\s*\]\s*\]\s*\):\s*root: Union\[\s*ButtonNode,\s*InputNode,\s*TextareaNode,\s*TextNode,\s*CardNode,\s*AlertNode,\s*ContainerNode,\s*GridNode,\s*StackNode,\s*ChartNode,\s*\]\s*=\s*Field\(\s*\.\.\.,\s*description=[\'"].*?[\'"],\s*discriminator=[\'"]type[\'"],\s*\)'
     
     node_replacement = '''Node = Union[
     ButtonNode,
