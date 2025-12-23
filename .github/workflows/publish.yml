@@ -73,11 +73,14 @@ jobs:
           chmod +x scripts/bump-version.sh
           ./scripts/bump-version.sh ${{ steps.version.outputs.version }}
 
-      - name: Set up Node.js
+      - name: Set up Node.js with OIDC
         uses: actions/setup-node@v4
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
+          scope: '@promptius-gui'
+          # OIDC authentication is automatic when npm Trusted Publishers is configured
+          # No NPM_TOKEN secret needed - setup-node uses GitHub OIDC token
 
       - name: Install dependencies
         run: |
