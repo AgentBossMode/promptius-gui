@@ -1,6 +1,7 @@
 # Promptius GUI - Dynamic UI Factory
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/AgentBossMode/promptius-gui)
+[![Documentation](https://img.shields.io/badge/Documentation-Read%20the%20Docs-blue?logo=readthedocs)](https://promptius-gui.readthedocs.io/en/latest/index.html)
 [![npm version](https://img.shields.io/npm/v/@promptius-gui/core?logo=npm)](https://www.npmjs.com/package/@promptius-gui/core)
 [![PyPI version](https://img.shields.io/pypi/v/promptius-gui-schema?logo=pypi)](https://pypi.org/project/promptius-gui-schema/)
 

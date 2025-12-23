@@ -1,6 +1,8 @@
 Introduction
 ============
 
+**GitHub Repository**: `promptius-gui <https://github.com/AgentBossMode/promptius-gui>`_
+
 Promptius GUI is a JSON-driven React UI factory that can dynamically render UIs based on a JSON schema. It supports multiple UI frameworks like Material UI, Chakra UI, and Ant Design.
 
 What Problem Are We Solving?
