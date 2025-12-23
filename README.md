@@ -15,6 +15,38 @@ This project is a JSON-driven React UI factory that can dynamically render UIs b
   <img src="assets/covid.png" alt="Covid report" width="45%" />
 </div>
 
+## What Problem Are We Solving?
+
+Generative AI excels at creating text and code, but agents struggle to present rich, interactive interfaces to users, especially when those agents are remote or running across trust boundaries.
+
+**Promptius-GUI** allows agents to "speak UI" by sending a declarative JSON format describing the intent of the UI. The client application then renders this using its own native component library (Material UI, Chakra UI, Ant Design, etc.).
+
+This approach ensures that agent-generated UIs are **safe like data, but expressive like code**.
+
+## Why Graph Structure?
+
+The graph-based structure (nodes + edges) is an intentional design choice that enables **dramatic token efficiency** when using structured output:
+
+- **Nested parent-child structure**: ~128k+ tokens when bound to Pydantic models
+- **Graph structure (nodes/edges separate)**: ~4k tokens when bound to Pydantic models
+
+This makes Promptius-GUI ideal for LLM integration with structured output tools like LangChain's `with_structured_output()`, providing developers with type-safe, error-resistant UI generation.
+
+## Structured Output Advantage
+
+Unlike systems that depend on raw JSON parsing, Promptius-GUI is designed for structured output:
+
+- **Pydantic models**: Direct binding to Python schema
+- **Type safety**: Full TypeScript + Python type generation
+- **Error resistance**: No JSON parsing errors
+- **Developer preference**: Structured output is preferred over raw JSON
+
+When you bind the schema to a Pydantic model for structured LLM output, you get:
+- Guaranteed type safety at compile time
+- Runtime validation with clear error messages
+- No need to handle JSON parsing errors
+- Seamless integration with LangChain, LlamaIndex, and other LLM frameworks
+
 ## Features
 
 - 🎨 **Multi-Framework Support**: Works seamlessly with Material UI, Chakra UI, and Ant Design
@@ -27,6 +59,22 @@ This project is a JSON-driven React UI factory that can dynamically render UIs b
 - 🎯 **Event Handling**: Built-in support for user interactions and form submissions
 - 📱 **Responsive Design**: Automatic responsive layouts and grid systems
 - 🚀 **Production Ready**: Battle-tested with FastAPI, React, and modern tooling
+
+## Use Cases
+
+Promptius-GUI is perfect for scenarios where agents need to generate dynamic, interactive UIs:
+
+### Dynamic Data Collection
+An agent generates a bespoke form (date pickers, sliders, inputs) based on the specific context of a conversation. For example, booking a specialized reservation that requires custom fields based on the service type.
+
+### Remote Sub-Agents
+An orchestrator agent delegates a task to a remote specialized agent (e.g., a travel booking agent) which returns a UI payload to be rendered inside the main chat window.
+
+### Adaptive Workflows
+Enterprise agents that generate approval dashboards or data visualizations on the fly based on the user's query. The UI adapts to the data structure and user requirements.
+
+### AI-Powered Forms
+LLMs can generate complex, multi-step forms with conditional logic based on natural language descriptions, without requiring developers to write form code.
 
 ## Architecture
 
