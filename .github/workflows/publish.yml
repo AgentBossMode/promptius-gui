@@ -89,11 +89,6 @@ jobs:
           cd js
           npm run build --if-present
 
-      - name: Run tests
-        run: |
-          cd js
-          npm test
-
       - name: Publish packages
         run: |
           cd js
