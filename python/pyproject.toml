@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "promptius-gui-schema"
 version = "0.1.0"
 description = "Type-safe UI schema definitions for cross-platform UI generation"
-readme = "README.md"
+readme = "../README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.8.1"
 authors = [

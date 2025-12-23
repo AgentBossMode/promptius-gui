@@ -36,7 +36,7 @@ datamodel-codegen \
     --input-file-type jsonschema \
     --output "$TEMP_FILE" \
     --output-model-type pydantic_v2.BaseModel \
-    --target-python-version 3.9
+    --target-python-version 3.10
 
 echo "🔧 Post-processing to fix oneOf issues..."
 
