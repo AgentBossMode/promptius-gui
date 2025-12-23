@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 jobs:
   publish-python:
     name: Publish Python Package
@@ -72,7 +76,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
@@ -83,11 +87,14 @@ jobs:
       - name: Build packages
         run: |
           cd js
-          npm run build
+          npm run build --if-present
+
+      - name: Run tests
+        run: |
+          cd js
+          npm test
 
       - name: Publish packages
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           cd js
           npm publish --workspaces --access public
