@@ -140,15 +140,15 @@ export interface UIMetadata {
   /**
    * UI schema description
    */
-  description?: string;
+  description: string;
   /**
    * Schema version
    */
-  version?: string;
+  version: string;
   /**
    * Target UI framework
    */
-  framework?: 'shadcn' | 'material-ui' | 'chakra-ui' | 'ant-design';
+  framework: 'shadcn' | 'material-ui' | 'chakra-ui' | 'ant-design';
   /**
    * The ID of the root node that serves as the entry point for rendering the UI tree. This value MUST match the id field of exactly one node in the nodes array. The renderer will start building the UI hierarchy from this root node and traverse the edges to render child components in the specified order.
    */
@@ -182,14 +182,14 @@ export interface ButtonProps {
   /**
    * Button visual variant
    */
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
+  variant: 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
   /**
    * Button size variant
    */
-  size?: 'sm' | 'md' | 'lg';
-  disabled?: boolean;
-  fullWidth?: boolean;
-  loading?: boolean;
+  size: 'sm' | 'md' | 'lg';
+  disabled: boolean;
+  fullWidth: boolean;
+  loading: boolean;
 }
 /**
  * Input node
@@ -215,37 +215,37 @@ export interface InputProps {
   /**
    * Placeholder text
    */
-  placeholder?: string;
+  placeholder: string;
   /**
    * HTML input type
    */
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date';
+  type: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date';
   /**
    * Input size variant
    */
-  size?: 'sm' | 'md' | 'lg';
-  disabled?: boolean;
-  required?: boolean;
+  size: 'sm' | 'md' | 'lg';
+  disabled: boolean;
+  required: boolean;
   /**
    * Input label
    */
-  label?: string;
+  label: string;
   /**
    * Helper text below input
    */
-  helperText?: string;
+  helperText: string;
   /**
    * Default input value
    */
-  defaultValue?: string;
+  defaultValue: string;
   /**
    * Maximum input length
    */
-  maxLength?: number;
+  maxLength: number;
   /**
    * Minimum input length
    */
-  minLength?: number;
+  minLength: number;
 }
 /**
  * Textarea node
@@ -271,25 +271,25 @@ export interface TextareaProps {
   /**
    * Placeholder text
    */
-  placeholder?: string;
+  placeholder: string;
   /**
    * Number of textarea rows
    */
-  rows?: number;
-  disabled?: boolean;
-  required?: boolean;
+  rows: number;
+  disabled: boolean;
+  required: boolean;
   /**
    * Textarea label
    */
-  label?: string;
+  label: string;
   /**
    * Helper text below textarea
    */
-  helperText?: string;
+  helperText: string;
   /**
    * Maximum textarea length
    */
-  maxLength?: number;
+  maxLength: number;
 }
 /**
  * Text node
@@ -319,17 +319,17 @@ export interface TextProps {
   /**
    * HTML tag for text component
    */
-  tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span' | 'label';
+  tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span' | 'label';
   /**
    * Text alignment
    */
-  align?: 'left' | 'center' | 'right' | 'justify';
-  bold?: boolean;
-  italic?: boolean;
+  align: 'left' | 'center' | 'right' | 'justify';
+  bold: boolean;
+  italic: boolean;
   /**
    * Text color (hex or CSS color name)
    */
-  color?: string;
+  color: string;
 }
 /**
  * Card node
@@ -355,19 +355,19 @@ export interface CardProps {
   /**
    * Card title
    */
-  title?: string;
+  title: string;
   /**
    * Card description
    */
-  description?: string;
+  description: string;
   /**
    * Card elevation level
    */
-  elevation?: number;
+  elevation: number;
   /**
    * Card padding in pixels
    */
-  padding?: number;
+  padding: number;
 }
 /**
  * Alert node
@@ -397,12 +397,12 @@ export interface AlertProps {
   /**
    * Alert title
    */
-  title?: string;
+  title: string;
   /**
    * Alert visual variant
    */
-  variant?: 'info' | 'success' | 'warning' | 'error';
-  dismissible?: boolean;
+  variant: 'info' | 'success' | 'warning' | 'error';
+  dismissible: boolean;
 }
 /**
  * Container node
@@ -428,12 +428,12 @@ export interface ContainerProps {
   /**
    * Maximum container width in pixels
    */
-  maxWidth?: number;
+  maxWidth: number;
   /**
    * Container padding in pixels
    */
-  padding?: number;
-  centered?: boolean;
+  padding: number;
+  centered: boolean;
 }
 /**
  * Grid node
@@ -463,11 +463,11 @@ export interface GridProps {
   /**
    * Gap between items in pixels
    */
-  gap?: number;
+  gap: number;
   /**
    * Enable responsive behavior
    */
-  responsive?: boolean;
+  responsive: boolean;
 }
 /**
  * Stack node
@@ -493,15 +493,15 @@ export interface StackProps {
   /**
    * Flexbox direction
    */
-  direction?: 'row' | 'column';
+  direction: 'row' | 'column';
   /**
    * Gap between items in pixels
    */
-  gap?: number;
+  gap: number;
   /**
    * Alignment of items
    */
-  align?: 'start' | 'center' | 'end' | 'stretch';
+  align: 'start' | 'center' | 'end' | 'stretch';
 }
 /**
  * Chart node
@@ -531,15 +531,15 @@ export interface ChartProps {
   /**
    * Chart width in pixels
    */
-  width?: number;
+  width: number;
   /**
    * Chart height in pixels
    */
-  height?: number;
+  height: number;
   /**
    * Chart category labels
    */
-  labels?: string[];
+  labels: string[];
   /**
    * Chart data series
    *
@@ -549,19 +549,19 @@ export interface ChartProps {
   /**
    * Custom chart colors
    */
-  colors?: string[];
+  colors: string[];
   /**
    * Chart title
    */
-  title?: string;
-  showLegend?: boolean;
-  legendPosition?: 'top' | 'right' | 'bottom' | 'left';
-  xAxis?: AxisXProps;
-  yAxis?: AxisYProps;
+  title: string;
+  showLegend: boolean;
+  legendPosition: 'top' | 'right' | 'bottom' | 'left';
+  xAxis: AxisXProps;
+  yAxis: AxisYProps;
   /**
    * Chart annotations
    */
-  annotations?: ChartAnnotation[];
+  annotations: ChartAnnotation[];
 }
 /**
  * Chart data series
@@ -573,7 +573,7 @@ export interface ChartSeries {
   /**
    * Series name
    */
-  name?: string;
+  name: string;
   /**
    * Series data points
    *
@@ -591,12 +591,12 @@ export interface AxisXProps {
   /**
    * X-axis label
    */
-  label?: string;
+  label: string;
   /**
    * X-axis tick labels
    */
-  ticks?: string[];
-  showGrid?: boolean;
+  ticks: string[];
+  showGrid: boolean;
 }
 /**
  * Y-axis configuration
@@ -608,16 +608,16 @@ export interface AxisYProps {
   /**
    * Y-axis label
    */
-  label?: string;
+  label: string;
   /**
    * Y-axis minimum value
    */
-  min?: number;
+  min: number;
   /**
    * Y-axis maximum value
    */
-  max?: number;
-  showGrid?: boolean;
+  max: number;
+  showGrid: boolean;
 }
 /**
  * Chart annotation
@@ -629,11 +629,11 @@ export interface ChartAnnotation {
   /**
    * X coordinate
    */
-  x?: number;
+  x: number;
   /**
    * Y coordinate
    */
-  y?: number;
+  y: number;
   /**
    * Annotation label
    */
@@ -688,7 +688,7 @@ export interface NavigateAction {
   /**
    * Navigation target window
    */
-  target?: '_self' | '_blank';
+  target: '_self' | '_blank';
 }
 /**
  * Update component state
@@ -718,11 +718,11 @@ export interface SubmitFormAction {
   /**
    * API endpoint to submit to
    */
-  endpoint?: string;
+  endpoint: string;
   /**
    * HTTP method for form submission
    */
-  method?: 'POST' | 'PUT' | 'PATCH';
+  method: 'POST' | 'PUT' | 'PATCH';
 }
 /**
  * Validate form or input
@@ -735,7 +735,7 @@ export interface ValidateAction {
   /**
    * Validation rules
    */
-  rules?: string[];
+  rules: string[];
 }
 /**
  * Custom handler reference

@@ -11,7 +11,7 @@ import { z } from 'zod';
 export const UISchema = z.object({
     metadata: z.object({
     title: z.string().min(1),
-    description: z.string().optional(),
+    description: z.string(),
     version: z.string().regex(/^\d+\.\d+\.\d+$/).default("1.0.0"),
     framework: z.enum(["shadcn", "material-ui", "chakra-ui", "ant-design"]).default("shadcn"),
     rootId: z.string().min(1)
@@ -36,11 +36,11 @@ export const UISchema = z.object({
     size: z.enum(["sm", "md", "lg"]).default("md"),
     disabled: z.boolean().default(false),
     required: z.boolean().default(false),
-    label: z.string().optional(),
-    helperText: z.string().optional(),
-    defaultValue: z.string().optional(),
-    maxLength: z.number().int().min(1).optional(),
-    minLength: z.number().int().min(0).optional()
+    label: z.string(),
+    helperText: z.string(),
+    defaultValue: z.string(),
+    maxLength: z.number().int().min(1),
+    minLength: z.number().int().min(0)
   }).strict()
   }).strict(), z.object({
     id: z.string().min(1),
@@ -50,9 +50,9 @@ export const UISchema = z.object({
     rows: z.number().int().min(1).max(20).default(4),
     disabled: z.boolean().default(false),
     required: z.boolean().default(false),
-    label: z.string().optional(),
-    helperText: z.string().optional(),
-    maxLength: z.number().int().min(1).optional()
+    label: z.string(),
+    helperText: z.string(),
+    maxLength: z.number().int().min(1)
   }).strict()
   }).strict(), z.object({
     id: z.string().min(1),
@@ -63,14 +63,14 @@ export const UISchema = z.object({
     align: z.enum(["left", "center", "right", "justify"]).default("left"),
     bold: z.boolean().default(false),
     italic: z.boolean().default(false),
-    color: z.string().regex(/^(#[0-9A-Fa-f]{6}|[a-z\-]+)$/).optional()
+    color: z.string().regex(/^(#[0-9A-Fa-f]{6}|[a-z\-]+)$/)
   }).strict()
   }).strict(), z.object({
     id: z.string().min(1),
     type: z.literal("card"),
     props: z.object({
-    title: z.string().optional(),
-    description: z.string().optional(),
+    title: z.string(),
+    description: z.string(),
     elevation: z.number().int().min(0).max(5).default(1),
     padding: z.number().int().min(0).max(64).default(16)
   }).strict()
@@ -79,7 +79,7 @@ export const UISchema = z.object({
     type: z.literal("alert"),
     props: z.object({
     message: z.string().min(1),
-    title: z.string().optional(),
+    title: z.string(),
     variant: z.enum(["info", "success", "warning", "error"]).default("info"),
     dismissible: z.boolean().default(false)
   }).strict()
@@ -87,7 +87,7 @@ export const UISchema = z.object({
     id: z.string().min(1),
     type: z.literal("container"),
     props: z.object({
-    maxWidth: z.number().int().min(320).max(1920).optional(),
+    maxWidth: z.number().int().min(320).max(1920),
     padding: z.number().int().min(0).max(64).default(16),
     centered: z.boolean().default(false)
   }).strict()
@@ -112,33 +112,33 @@ export const UISchema = z.object({
     type: z.literal("chart"),
     props: z.object({
     chartType: z.enum(["bar", "line", "pie"]),
-    width: z.number().int().min(100).max(4000).optional(),
-    height: z.number().int().min(100).max(4000).optional(),
-    labels: z.array(z.string()).nullish(),
+    width: z.number().int().min(100).max(4000),
+    height: z.number().int().min(100).max(4000),
+    labels: z.array(z.string()),
     series: z.array(z.object({
-    name: z.any().optional(),
+    name: z.any(),
     data: z.any()
   }).strict()).min(1),
-    colors: z.array(z.string()).nullish(),
-    title: z.string().optional(),
+    colors: z.array(z.string()),
+    title: z.string(),
     showLegend: z.boolean().default(true),
     legendPosition: z.enum(["top", "right", "bottom", "left"]).default("top"),
     xAxis: z.object({
-    label: z.string().optional(),
-    ticks: z.array(z.any()).nullish(),
+    label: z.string(),
+    ticks: z.array(z.any()),
     showGrid: z.boolean().default(false)
-  }).strict().nullish(),
+  }).strict(),
     yAxis: z.object({
-    label: z.string().optional(),
-    min: z.number().optional(),
-    max: z.number().optional(),
+    label: z.string(),
+    min: z.number(),
+    max: z.number(),
     showGrid: z.boolean().default(false)
-  }).strict().nullish(),
+  }).strict(),
     annotations: z.array(z.object({
-    x: z.any().optional(),
-    y: z.any().optional(),
+    x: z.any(),
+    y: z.any(),
     label: z.any()
-  }).strict()).nullish()
+  }).strict())
   }).strict()
   }).strict()])).min(1),
     edges: z.array(z.object({
@@ -159,7 +159,7 @@ export const UISchema = z.object({
     value: z.union([z.string(), z.number(), z.boolean()])
   }).strict(), z.object({
     type: z.literal("submitForm"),
-    endpoint: z.string().optional(),
+    endpoint: z.string(),
     method: z.enum(["POST", "PUT", "PATCH"]).default("POST")
   }).strict(), z.object({
     type: z.literal("validate"),
@@ -195,18 +195,18 @@ export const InputPropsSchema = z.object({
     size: z.enum(["sm", "md", "lg"]).default("md"),
     disabled: z.boolean().default(false),
     required: z.boolean().default(false),
-    label: z.string().optional(),
-    helperText: z.string().optional(),
-    defaultValue: z.string().optional(),
-    maxLength: z.number().int().min(1).optional(),
-    minLength: z.number().int().min(0).optional()
+    label: z.string(),
+    helperText: z.string(),
+    defaultValue: z.string(),
+    maxLength: z.number().int().min(1),
+    minLength: z.number().int().min(0)
   }).strict();
 
 export const AlertVariantSchema = z.enum(["info", "success", "warning", "error"]);
 
 export const AlertPropsSchema = z.object({
     message: z.string().min(1),
-    title: z.string().optional(),
+    title: z.string(),
     variant: z.enum(["info", "success", "warning", "error"]).default("info"),
     dismissible: z.boolean().default(false)
   }).strict();
@@ -221,7 +221,7 @@ export const TextPropsSchema = z.object({
     align: z.enum(["left", "center", "right", "justify"]).default("left"),
     bold: z.boolean().default(false),
     italic: z.boolean().default(false),
-    color: z.string().regex(/^(#[0-9A-Fa-f]{6}|[a-z\-]+)$/).optional()
+    color: z.string().regex(/^(#[0-9A-Fa-f]{6}|[a-z\-]+)$/)
   }).strict();
 
 export const FlexDirectionSchema = z.enum(["row", "column"]);
@@ -230,33 +230,33 @@ export const ChartTypeSchema = z.enum(["bar", "line", "pie"]);
 
 export const ChartPropsSchema = z.object({
     chartType: z.enum(["bar", "line", "pie"]),
-    width: z.number().int().min(100).max(4000).optional(),
-    height: z.number().int().min(100).max(4000).optional(),
-    labels: z.array(z.string()).nullish(),
+    width: z.number().int().min(100).max(4000),
+    height: z.number().int().min(100).max(4000),
+    labels: z.array(z.string()),
     series: z.array(z.object({
-    name: z.string().optional(),
+    name: z.string(),
     data: z.array(z.number()).min(1)
   }).strict()).min(1),
-    colors: z.array(z.string()).nullish(),
-    title: z.string().optional(),
+    colors: z.array(z.string()),
+    title: z.string(),
     showLegend: z.boolean().default(true),
     legendPosition: z.enum(["top", "right", "bottom", "left"]).default("top"),
     xAxis: z.object({
-    label: z.string().optional(),
-    ticks: z.array(z.string()).nullish(),
+    label: z.string(),
+    ticks: z.array(z.string()),
     showGrid: z.boolean().default(false)
-  }).strict().nullish(),
+  }).strict(),
     yAxis: z.object({
-    label: z.string().optional(),
-    min: z.number().optional(),
-    max: z.number().optional(),
+    label: z.string(),
+    min: z.number(),
+    max: z.number(),
     showGrid: z.boolean().default(false)
-  }).strict().nullish(),
+  }).strict(),
     annotations: z.array(z.object({
-    x: z.number().optional(),
-    y: z.number().optional(),
+    x: z.number(),
+    y: z.number(),
     label: z.string()
-  }).strict()).nullish()
+  }).strict())
   }).strict();
 
 export const EventTypeSchema = z.enum(["onClick", "onSubmit", "onChange", "onFocus", "onBlur"]);
@@ -275,7 +275,7 @@ export const SetStateActionSchema = z.object({
 
 export const SubmitFormActionSchema = z.object({
     type: z.literal("submitForm"),
-    endpoint: z.string().optional(),
+    endpoint: z.string(),
     method: z.enum(["POST", "PUT", "PATCH"]).default("POST")
   }).strict();
 
@@ -299,11 +299,11 @@ export const NodeSchema = z.union([z.object({
     size: z.enum(["sm", "md", "lg"]).default("md"),
     disabled: z.boolean().default(false),
     required: z.boolean().default(false),
-    label: z.string().optional(),
-    helperText: z.string().optional(),
-    defaultValue: z.string().optional(),
-    maxLength: z.number().int().min(1).optional(),
-    minLength: z.number().int().min(0).optional()
+    label: z.string(),
+    helperText: z.string(),
+    defaultValue: z.string(),
+    maxLength: z.number().int().min(1),
+    minLength: z.number().int().min(0)
   }).strict()
   }).strict(), z.object({
     id: z.string().min(1),
@@ -313,9 +313,9 @@ export const NodeSchema = z.union([z.object({
     rows: z.number().int().min(1).max(20).default(4),
     disabled: z.boolean().default(false),
     required: z.boolean().default(false),
-    label: z.string().optional(),
-    helperText: z.string().optional(),
-    maxLength: z.number().int().min(1).optional()
+    label: z.string(),
+    helperText: z.string(),
+    maxLength: z.number().int().min(1)
   }).strict()
   }).strict(), z.object({
     id: z.string().min(1),
@@ -326,14 +326,14 @@ export const NodeSchema = z.union([z.object({
     align: z.enum(["left", "center", "right", "justify"]).default("left"),
     bold: z.boolean().default(false),
     italic: z.boolean().default(false),
-    color: z.string().regex(/^(#[0-9A-Fa-f]{6}|[a-z\-]+)$/).optional()
+    color: z.string().regex(/^(#[0-9A-Fa-f]{6}|[a-z\-]+)$/)
   }).strict()
   }).strict(), z.object({
     id: z.string().min(1),
     type: z.literal("card"),
     props: z.object({
-    title: z.string().optional(),
-    description: z.string().optional(),
+    title: z.string(),
+    description: z.string(),
     elevation: z.number().int().min(0).max(5).default(1),
     padding: z.number().int().min(0).max(64).default(16)
   }).strict()
@@ -342,7 +342,7 @@ export const NodeSchema = z.union([z.object({
     type: z.literal("alert"),
     props: z.object({
     message: z.string().min(1),
-    title: z.string().optional(),
+    title: z.string(),
     variant: z.enum(["info", "success", "warning", "error"]).default("info"),
     dismissible: z.boolean().default(false)
   }).strict()
@@ -350,7 +350,7 @@ export const NodeSchema = z.union([z.object({
     id: z.string().min(1),
     type: z.literal("container"),
     props: z.object({
-    maxWidth: z.number().int().min(320).max(1920).optional(),
+    maxWidth: z.number().int().min(320).max(1920),
     padding: z.number().int().min(0).max(64).default(16),
     centered: z.boolean().default(false)
   }).strict()
@@ -375,33 +375,33 @@ export const NodeSchema = z.union([z.object({
     type: z.literal("chart"),
     props: z.object({
     chartType: z.enum(["bar", "line", "pie"]),
-    width: z.number().int().min(100).max(4000).optional(),
-    height: z.number().int().min(100).max(4000).optional(),
-    labels: z.array(z.string()).nullish(),
+    width: z.number().int().min(100).max(4000),
+    height: z.number().int().min(100).max(4000),
+    labels: z.array(z.string()),
     series: z.array(z.object({
-    name: z.string().optional(),
+    name: z.string(),
     data: z.array(z.number()).min(1)
   }).strict()).min(1),
-    colors: z.array(z.string()).nullish(),
-    title: z.string().optional(),
+    colors: z.array(z.string()),
+    title: z.string(),
     showLegend: z.boolean().default(true),
     legendPosition: z.enum(["top", "right", "bottom", "left"]).default("top"),
     xAxis: z.object({
-    label: z.string().optional(),
-    ticks: z.array(z.string()).nullish(),
+    label: z.string(),
+    ticks: z.array(z.string()),
     showGrid: z.boolean().default(false)
-  }).strict().nullish(),
+  }).strict(),
     yAxis: z.object({
-    label: z.string().optional(),
-    min: z.number().optional(),
-    max: z.number().optional(),
+    label: z.string(),
+    min: z.number(),
+    max: z.number(),
     showGrid: z.boolean().default(false)
-  }).strict().nullish(),
+  }).strict(),
     annotations: z.array(z.object({
-    x: z.number().optional(),
-    y: z.number().optional(),
+    x: z.number(),
+    y: z.number(),
     label: z.string()
-  }).strict()).nullish()
+  }).strict())
   }).strict()
   }).strict()]);
 
@@ -424,7 +424,7 @@ export const EventSchema = z.object({
     value: z.union([z.string(), z.number(), z.boolean()])
   }).strict(), z.object({
     type: z.literal("submitForm"),
-    endpoint: z.string().optional(),
+    endpoint: z.string(),
     method: z.enum(["POST", "PUT", "PATCH"]).default("POST")
   }).strict(), z.object({
     type: z.literal("validate"),
@@ -437,7 +437,7 @@ export const EventSchema = z.object({
 
 export const UIMetadataSchema = z.object({
     title: z.string().min(1),
-    description: z.string().optional(),
+    description: z.string(),
     version: z.string().regex(/^\d+\.\d+\.\d+$/).default("1.0.0"),
     framework: z.enum(["shadcn", "material-ui", "chakra-ui", "ant-design"]).default("shadcn"),
     rootId: z.string().min(1)

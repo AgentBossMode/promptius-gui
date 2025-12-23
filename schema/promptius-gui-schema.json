@@ -103,7 +103,7 @@
           "description": "Navigation target window"
         }
       },
-      "required": ["type", "url"],
+      "required": ["type", "url", "target"],
       "additionalProperties": false,
       "description": "Navigate to a URL or route"
     },
@@ -148,7 +148,7 @@
           "description": "HTTP method for form submission"
         }
       },
-      "required": ["type"],
+      "required": ["type", "endpoint", "method"],
       "additionalProperties": false,
       "description": "Submit form data"
     },
@@ -167,7 +167,7 @@
           "description": "Validation rules"
         }
       },
-      "required": ["type"],
+      "required": ["type", "rules"],
       "additionalProperties": false,
       "description": "Validate form or input"
     },
@@ -228,7 +228,7 @@
           "default": false
         }
       },
-      "required": ["label"],
+      "required": ["label", "variant", "size", "disabled", "fullWidth", "loading"],
       "additionalProperties": false,
       "description": "Type-safe props for Button component"
     },
@@ -279,6 +279,7 @@
           "description": "Minimum input length"
         }
       },
+      "required": ["placeholder", "type", "size", "disabled", "required", "label", "helperText", "defaultValue", "maxLength", "minLength"],
       "additionalProperties": false,
       "description": "Type-safe props for Input component"
     },
@@ -319,6 +320,7 @@
           "description": "Maximum textarea length"
         }
       },
+      "required": ["placeholder", "rows", "disabled", "required", "label", "helperText", "maxLength"],
       "additionalProperties": false,
       "description": "Type-safe props for Textarea component"
     },
@@ -351,7 +353,7 @@
           "description": "Text color (hex or CSS color name)"
         }
       },
-      "required": ["content"],
+      "required": ["content", "tag", "align", "bold", "italic", "color"],
       "additionalProperties": false,
       "description": "Type-safe props for Text component"
     },
@@ -381,6 +383,7 @@
           "description": "Card padding in pixels"
         }
       },
+      "required": ["title", "description", "elevation", "padding"],
       "additionalProperties": false,
       "description": "Type-safe props for Card component"
     },
@@ -405,7 +408,7 @@
           "default": false
         }
       },
-      "required": ["message"],
+      "required": ["message", "title", "variant", "dismissible"],
       "additionalProperties": false,
       "description": "Type-safe props for Alert component"
     },
@@ -430,6 +433,7 @@
           "default": false
         }
       },
+      "required": ["maxWidth", "padding", "centered"],
       "additionalProperties": false,
       "description": "Type-safe props for Container component"
     },
@@ -456,7 +460,7 @@
           "description": "Enable responsive behavior"
         }
       },
-      "required": ["columns"],
+      "required": ["columns", "gap", "responsive"],
       "additionalProperties": false,
       "description": "Type-safe props for Grid layout"
     },
@@ -481,6 +485,7 @@
           "description": "Alignment of items"
         }
       },
+      "required": ["direction", "gap", "align"],
       "additionalProperties": false,
       "description": "Type-safe props for Stack layout"
     },
@@ -500,7 +505,7 @@
           "description": "Series data points"
         }
       },
-      "required": ["data"],
+      "required": ["name", "data"],
       "additionalProperties": false,
       "description": "Chart data series"
     },
@@ -523,6 +528,7 @@
           "default": false
         }
       },
+      "required": ["label", "ticks", "showGrid"],
       "additionalProperties": false,
       "description": "X-axis configuration"
     },
@@ -546,6 +552,7 @@
           "default": false
         }
       },
+      "required": ["label", "min", "max", "showGrid"],
       "additionalProperties": false,
       "description": "Y-axis configuration"
     },
@@ -565,7 +572,7 @@
           "description": "Annotation label"
         }
       },
-      "required": ["label"],
+      "required": ["x", "y", "label"],
       "additionalProperties": false,
       "description": "Chart annotation"
     },
@@ -637,7 +644,7 @@
           "description": "Chart annotations"
         }
       },
-      "required": ["chartType", "series"],
+      "required": ["chartType", "width", "height", "labels", "series", "colors", "title", "showLegend", "legendPosition", "xAxis", "yAxis", "annotations"],
       "additionalProperties": false,
       "description": "Type-safe props for Chart component"
     },
@@ -921,7 +928,7 @@
           "description": "The ID of the root node that serves as the entry point for rendering the UI tree. This value MUST match the id field of exactly one node in the nodes array. The renderer will start building the UI hierarchy from this root node and traverse the edges to render child components in the specified order."
         }
       },
-      "required": ["title", "rootId"],
+      "required": ["title", "description", "version", "framework", "rootId"],
       "additionalProperties": false,
       "description": "Metadata for the UI schema including title, description, version, target framework, and most importantly rootId which specifies which node serves as the root of the component tree. The rootId MUST exist in the nodes array."
     }
